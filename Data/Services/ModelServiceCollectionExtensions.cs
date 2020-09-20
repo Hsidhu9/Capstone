@@ -1,5 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using ShiftPicker.Data;
+﻿using ShiftPicker.Data;
 using ShiftPicker.Data.Services;
 using System;
 using System.Collections.Generic;

@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ModelServiceCollectionExtensions
     {
-        public static void AddServices(this IServiceCollection services) git push --set-upstream origin fix_project
+        public static void AddServices(this IServiceCollection services) 
         {
             services.AddScoped<IUserService, UserService>()
                     .AddScoped<IUserRoleService, UserRoleService>();

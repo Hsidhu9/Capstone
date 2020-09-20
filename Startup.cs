@@ -27,6 +27,7 @@ namespace Shift_Picker
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

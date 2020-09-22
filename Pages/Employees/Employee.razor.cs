@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using ShiftPicker.Data;
+using ShiftPicker.Data.Services;
 using ShiftPicker.Data.Models;
 using System;
 using System.Collections.Generic;

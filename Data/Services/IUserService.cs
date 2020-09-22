@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ShiftPicker.Data
+namespace ShiftPicker.Data.Services
 {
     public interface IUserService
     {

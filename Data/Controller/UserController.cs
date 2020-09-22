@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShiftPicker.Data.Models;
+using ShiftPicker.Data.Services;
 
 namespace ShiftPicker.Data.Controller
 {

@@ -1,9 +1,25 @@
 ﻿@page "/employee/create"
-@namespace Shift_Picker.Pages
-@inherits CreateEmployee
-<h3>CreateEmployee</h3>
+@namespace Shift_Picker.Pages.Employees
+@inject ShiftPicker.Data.Services.IUserRoleService UserRoleService
+@inject ShiftPicker.Data.Services.IUserService UserService
+
+<h3>Create</h3>
 
 @code {
+    ShiftPicker.Data.Models.UserModel Employee { get; set; } = new ShiftPicker.Data.Models.UserModel();
+    List<ShiftPicker.Data.Models.UserRole> UserRoles = new List<ShiftPicker.Data.Models.UserRole>();
+
+    int selectedRoleId;
+
+    protected async override Task OnInitializedAsync()
+    {
+        UserRoles = await UserRoleService.GetAll();
+    }
+
+    protected async Task AddEmployee()
+    {
+        await UserService.AddUser(Employee);
+    }
 
 }
 
@@ -52,7 +68,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" @onclick="AddEmployee" />
             </div>
         </form>
     </div>

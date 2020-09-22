@@ -21,14 +21,15 @@ namespace ShiftPicker.Data.Services
             await _userContext.SaveChangesAsync();
         }
 
-        public void UpdateUser(UserModel user)
+        public async Task UpdateUser(UserModel user)
         {
-            throw new NotImplementedException();
+            _userContext.Attach(user).State = EntityState.Modified;
+            await _userContext.SaveChangesAsync();
         }
 
-        public UserModel GetUser(int Id)
+        public async Task<UserModel> GetUser(int Id)
         {
-            return new UserModel();
+            return await _userContext.UserModels.FirstOrDefaultAsync(a => a.Id == Id);
         }
 
         public void DeleteUser(int id)

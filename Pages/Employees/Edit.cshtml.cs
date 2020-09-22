@@ -6,17 +6,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Shift_Picker.Pages;
 using ShiftPicker.Data;
+using ShiftPicker.Data.Services;
 
 namespace ShiftPicker.Data.Models
 {
-    public class EditModel : PageModel
+    [IgnoreAntiforgeryToken(Order = 1001)]
+    public class EditModel : RoleNamePageModel
     {
-        private readonly ShiftPicker.Data.UserContext _context;
+        private readonly IUserService _userService;
+        private readonly IUserRoleService _userRoleService;
 
-        public EditModel(ShiftPicker.Data.UserContext context)
+        public EditModel(IUserService userService, IUserRoleService userRoleService)
         {
-            _context = context;
+            _userService = userService;
+            _userRoleService = userRoleService;
         }
 
         [BindProperty]
@@ -29,7 +34,9 @@ namespace ShiftPicker.Data.Models
                 return NotFound();
             }
 
-            UserModel = await _context.UserModels.FirstOrDefaultAsync(m => m.Id == id);
+            UserModel = await _userService.GetUser(id.Value);
+            var roles = await _userRoleService.GetAll();
+            PopulateUserRolesAsync(roles);
 
             if (UserModel == null)
             {
@@ -46,31 +53,17 @@ namespace ShiftPicker.Data.Models
             {
                 return Page();
             }
-
-            _context.Attach(UserModel).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _userService.UpdateUser(UserModel);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserModelExists(UserModel.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return RedirectToPage("./Index");
         }
 
-        private bool UserModelExists(int id)
-        {
-            return _context.UserModels.Any(e => e.Id == id);
-        }
     }
 }

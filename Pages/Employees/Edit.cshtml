@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{id:min(1)}"
 @model ShiftPicker.Data.Models.EditModel
 
 @{
@@ -15,13 +15,13 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="UserModel.Id" />
             <div class="form-group">
-                <label asp-for="UserModel.FirstName" class="control-label"></label>
-                <input asp-for="UserModel.FirstName" class="form-control" />
+                <label asp-for="UserModel.FirstName" class="control-label">FirstName</label>
+                <input asp-for="UserModel.FirstName" class="form-control"/>
                 <span asp-validation-for="UserModel.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserModel.LastName" class="control-label"></label>
-                <input asp-for="UserModel.LastName" class="form-control" />
+                <input asp-for="UserModel.LastName" class="form-control"  />
                 <span asp-validation-for="UserModel.LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -40,9 +40,16 @@
                 <span asp-validation-for="UserModel.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserModel.PhoneNumber" class="control-label"></label>
-                <input asp-for="UserModel.PhoneNumber" class="form-control" />
-                <span asp-validation-for="UserModel.PhoneNumber" class="text-danger"></span>
+                <label asp-for="UserModel.Phone" class="control-label"></label>
+                <input asp-for="UserModel.Phone" class="form-control" />
+                <span asp-validation-for="UserModel.Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserModel.RoleId" class="control-label">Role</label>
+                @Html.DropDownListFor(x => x.UserModel.RoleId,
+                                            new SelectList(Model.UserRoles, "Value", "Text"),
+                                            htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.UserModel.RoleId, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

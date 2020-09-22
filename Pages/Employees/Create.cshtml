@@ -15,43 +15,40 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserModel.FirstName" class="control-label">First Name</label>
-                <input asp-for="UserModel.FirstName" class="form-control" type="text" name="UserModel.FirstName"/>
+                <input asp-for="UserModel.FirstName" class="form-control" type="text" />
                 <span asp-validation-for="UserModel.FirstName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserModel.LastName" class="control-label">Last Name</label>
-                <input asp-for="UserModel.LastName" class="form-control" type="text" name="UserModel.LastName"/>
+                <input asp-for="UserModel.LastName" class="form-control" type="text" name="UserModel.LastName" />
                 <span asp-validation-for="UserModel.LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserModel.UserName" class="control-label">Username</label>
-                <input asp-for="UserModel.UserName" class="form-control" type="text" name="UserModel.UserName"/>
+                <input asp-for="UserModel.UserName" class="form-control" type="text" name="UserModel.UserName" />
                 <span asp-validation-for="UserModel.UserName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserModel.Password" class="control-label">Password</label>
-                <input asp-for="UserModel.Password" class="form-control"  type="password" name="UserModel.Password"/>
+                <input asp-for="UserModel.Password" class="form-control" type="password" name="UserModel.Password" />
                 <span asp-validation-for="UserModel.Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="UserModel.Email" class="control-label">Email</label>
-                <input asp-for="UserModel.Email" class="form-control" type="email" name="UserModel.Email"/>
+                <input asp-for="UserModel.Email" class="form-control" type="email" name="UserModel.Email" />
                 <span asp-validation-for="UserModel.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserModel.PhoneNumber" class="control-label">Phone Number</label>
-                <input asp-for="UserModel.PhoneNumber" class="form-control" type="tel" name="UserModel.PhoneNumber"/>
+                <label asp-for="UserModel.Phone" class="control-label">Phone Number</label>
+                <input asp-for="UserModel.Phone" class="form-control" type="text" name="UserModel.Phone" />
                 <span asp-validation-for="UserModel.PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="UserModel.Role" class="control-label">Role</label>
-                <select asp-for="UserModel.RoleId" 
-                        class="form-control"
-                        asp-items="@Model.RoleNames"
-                        name="UserModel.RoleId">
-                    <option value="">-- Select Role --</option>
-                </select>
-                <span asp-validation-for="UserModel.RoleId" class="text-danger"></span>
+                <label asp-for="UserModel.RoleId" class="control-label">Role</label>
+                @Html.DropDownListFor(x => x.UserModel.RoleId, 
+                                            new SelectList(Model.UserRoles, "Value", "Text"),
+                                            htmlAttributes: new { @class = "form-control"})
+                @Html.ValidationMessageFor(x => x.UserModel.RoleId, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

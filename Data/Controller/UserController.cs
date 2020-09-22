@@ -18,10 +18,10 @@ namespace ShiftPicker.Data.Controller
         }
         // GET: User/Details/5
         [HttpGet]
-        public UserModel Get(int id)
+        public async Task<UserModel> Get(int id)
         {
 
-            return _userService.GetUser(id);
+            return await _userService.GetUser(id);
         }
 
 

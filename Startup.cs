@@ -32,7 +32,14 @@ namespace Shift_Picker
             services.AddServices();
 
             services.AddDbContext<UserContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("UserContext")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("UserContext"),
+                          sqlServerOptionsAction: sqlOptions =>
+                          {
+                              sqlOptions.EnableRetryOnFailure();
+                          });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -6,20 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Shift_Picker.Pages.Employees
+namespace Shift_Picker.Components.Employees
 {
-    public class Employee : ComponentBase
+    public partial class AllEmployees : ComponentBase
     {
         [Inject]
         protected IUserService UserService { get; set; }
 
-        protected List<UserModel> AllUsers { get; set; } = new List<UserModel>();
+        protected List<UserModel> AllUsers { get; set; }
 
-        protected async override  Task OnParametersSetAsync()
+        protected async override Task OnInitializedAsync()
         {
             AllUsers = await UserService.GetAll();
         }
 
-        
+
     }
 }

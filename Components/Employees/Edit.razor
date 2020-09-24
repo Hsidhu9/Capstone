@@ -1,30 +1,12 @@
-﻿@page "/employee/create"
-@namespace Shift_Picker.Pages.Employees
-@inject ShiftPicker.Data.Services.IUserRoleService UserRoleService
-@inject ShiftPicker.Data.Services.IUserService UserService
-
-<h3>Create</h3>
-
-@code {
-    ShiftPicker.Data.Models.UserModel Employee { get; set; } = new ShiftPicker.Data.Models.UserModel();
-    List<ShiftPicker.Data.Models.UserRole> UserRoles = new List<ShiftPicker.Data.Models.UserRole>();
-
-    int selectedRoleId;
-
-    protected async override Task OnInitializedAsync()
-    {
-        UserRoles = await UserRoleService.GetAll();
-    }
-
-    protected async Task AddEmployee()
-    {
-        await UserService.AddUser(Employee);
-    }
-
-}
+﻿@page "/employee/edit/{employeeId:int}"
+@namespace Shift_Picker.Components.Employees
+@inherits Shift_Picker.Components.Employees.EditEmployee
+<h3>Edit User</h3>
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col" />
+    <div class="col-5 card alert alert-secondary mt-4">
+        <h3>Create a new user</h3>
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -68,13 +50,9 @@
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" @onclick="AddEmployee" />
+                <input type="submit" value="Create" class="btn" />
             </div>
         </form>
     </div>
+    <div class="col" />
 </div>
-
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
-

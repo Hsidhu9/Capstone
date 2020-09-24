@@ -6,25 +6,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Shift_Picker.Components.Employees
+namespace Shift_Picker.Components
 {
-    public partial class EditEmployee : ComponentBase
+    public class EditEmployeeVM : ComponentBase
     {
-        protected int EmployeeId { get; set; }
-        protected UserModel Employee { get; set; }
+        [Parameter]
+        public int EmployeeId { get; set; }
+        [Parameter]
+        public UserModel Employee { get; set; }
 
         [Inject]
         protected IUserService UserService { get; set; }
         [Inject]
         protected IUserRoleService UserRoleService { get; set; }
 
-        protected List<UserRole> UserRoles;
+        [Parameter]
+        public List<UserRole> UserRoles { get; set; }
 
-
-        protected async override Task OnInitializedAsync()
+        protected async override Task OnParametersSetAsync()
         {
             Employee = await UserService.GetUser(EmployeeId);
             UserRoles = await UserRoleService.GetAll();
+            await base.OnParametersSetAsync();
         }
     }
 }

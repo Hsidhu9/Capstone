@@ -45,12 +45,14 @@ namespace ShiftPicker.Data.Services
             throw new NotImplementedException();
         }
 
-        public  async Task<List<UserModel>> GetAll()
+        public async Task<List<UserModel>> GetAll()
         {
-           return await _userContext
+           var x = await _userContext
                         .UserModels
                         .Include(u => u.Role)
                         .ToListAsync();
+
+            return x;
         }
     }
 }

@@ -17,16 +17,8 @@ namespace ShiftPicker.Data.Services
         }
         public async Task  AddUser(UserModel user)
         {
-            try
-            {
-                await _userContext.UserModels.AddAsync(user);
-                await _userContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-
-                
-            }
+            await _userContext.UserModels.AddAsync(user);
+            await _userContext.SaveChangesAsync();
         }
 
         public async Task UpdateUser(UserModel user)

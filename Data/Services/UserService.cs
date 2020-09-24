@@ -17,6 +17,8 @@ namespace ShiftPicker.Data.Services
         }
         public async Task  AddUser(UserModel user)
         {
+            //DbContextOptionsBuilder<UserContext> uContextOPtions = 
+            //using (var dbContext = new UserContext())
             await _userContext.UserModels.AddAsync(user);
             await _userContext.SaveChangesAsync();
         }

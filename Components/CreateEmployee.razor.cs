@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Shift_Picker.Helpers;
 using ShiftPicker.Data.Models;
 using ShiftPicker.Data.Services;
 using System;
@@ -16,9 +15,6 @@ namespace Shift_Picker.Components
 
         [Inject]
         protected NavigationManager NavManager { get; set; }
-
-        [Inject]
-        public ScopeControl Control { get; set; }
 
         private IUserRoleService UserRoleService =>ScopedServices.GetService<IUserRoleService>();
 

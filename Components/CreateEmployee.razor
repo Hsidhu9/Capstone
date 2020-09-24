@@ -34,9 +34,16 @@
                 <span asp-validation-for="UserModel.Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Phone Number</label>
-                <input class="form-control" type="text" name="UserModel.Phone" @bind="Employee.Phone" />
-                <span asp-validation-for="UserModel.PhoneNumber" class="text-danger"></span>
+                <label class="control-label">Address</label>
+                <input class="form-control" type="text" placeholder="Address" @bind="Employee.Address" /><br/>
+                <input class="form-control" type="text" placeholder="City" @bind="Employee.City" /><br />
+                <input class="form-control" type="text" placeholder="State" @bind="Employee.State" /><br />
+                <input class="form-control" type="text" placeholder="Zip" @bind="Employee.Zip" /><br />
+                <select @bind="Employee.Country"> Select Country
+                    <option value="USA"> USA </option>
+                    <option value="Canada"> Canada </option>
+                </select>
+
             </div>
             <div class="form-group">
                 <label asp-for="UserModel.RoleId" class="control-label">Role</label>

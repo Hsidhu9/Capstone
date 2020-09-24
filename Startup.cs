@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Shift_Picker.Helpers;
 using ShiftPicker.Data;
 
 namespace Shift_Picker
@@ -39,7 +38,6 @@ namespace Shift_Picker
                               sqlOptions.EnableRetryOnFailure();
                           });
             });
-            services.AddTransient<ScopeControl>();
 
         }
 

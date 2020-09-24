@@ -12,5 +12,6 @@ namespace ShiftPicker.Data.Models
         public DateTime EndDateTime { get; set; }
         public UserModel CreatedBy { get; set; }
         public int NumberOfEmployeesNeeded { get; set; }
+        public ICollection<ShiftDetailModel> ShiftDetails { get; set; }
     }
 }

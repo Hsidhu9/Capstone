@@ -1,15 +1,15 @@
-﻿using ShiftPicker.Data.Services;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Components;
 using ShiftPicker.Data.Models;
+using ShiftPicker.Data.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Shift_Picker.Components
 {
-    public partial class AllEmployeesVM : OwningComponentBase
+    public partial class AllSupervisorsVM: OwningComponentBase
     {
         private IUserService UserService => ScopedServices.GetService<IUserService>();
 
@@ -17,7 +17,8 @@ namespace Shift_Picker.Components
 
         protected async override Task OnInitializedAsync()
         {
-            AllUsers = await UserService.GetAllEmployees();
+            AllUsers = await UserService.GetAllSupervisors();
         }
+
     }
 }

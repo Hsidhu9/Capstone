@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 using ShiftPicker.Data.Models;
 using ShiftPicker.Data.Services;
 using System;
@@ -8,26 +9,30 @@ using System.Threading.Tasks;
 
 namespace Shift_Picker.Components
 {
-    public class EditEmployeeVM : ComponentBase
+    public class EditEmployeeVM : OwningComponentBase
     {
         [Parameter]
         public int EmployeeId { get; set; }
-        [Parameter]
-        public UserModel Employee { get; set; }
+        protected UserModel Employee { get; set; } = new UserModel();
 
         [Inject]
-        protected IUserService UserService { get; set; }
-        [Inject]
-        protected IUserRoleService UserRoleService { get; set; }
+        protected NavigationManager NavManager { get; set; }
 
-        [Parameter]
-        public List<UserRole> UserRoles { get; set; }
+        private IUserRoleService UserRoleService => ScopedServices.GetService<IUserRoleService>();
 
+        private IUserService UserService => ScopedServices.GetService<IUserService>();
+
+        protected List<UserRole> UserRoles { get; set; } = new List<UserRole>();
         protected async override Task OnParametersSetAsync()
         {
             Employee = await UserService.GetUser(EmployeeId);
             UserRoles = await UserRoleService.GetAll();
             await base.OnParametersSetAsync();
+        }
+
+        protected void UpdateEmployee()
+        {
+            UserService.UpdateUser(Employee);
         }
     }
 }

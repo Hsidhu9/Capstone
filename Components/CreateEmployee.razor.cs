@@ -31,9 +31,9 @@ namespace Shift_Picker.Components
             await base.OnParametersSetAsync();
         }
 
-        public  async Task AddEmployee()
+        public  void AddEmployee()
         {
-            await UserService.AddUser(Employee);
+            UserService.AddUser(Employee);
             NavManager.NavigateTo("/showAllEmployees");
         }
     }

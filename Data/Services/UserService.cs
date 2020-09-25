@@ -15,22 +15,21 @@ namespace ShiftPicker.Data.Services
         {
             _userContext = userContext;
         }
-        public async Task  AddUser(UserModel user)
+        public void AddUser(UserModel user)
         {
-            //DbContextOptionsBuilder<UserContext> uContextOPtions = 
-            //using (var dbContext = new UserContext())
-            await _userContext.UserModels.AddAsync(user);
-            await _userContext.SaveChangesAsync();
+            _userContext.Add(user);
+            _userContext.SaveChanges();
         }
 
-        public async Task UpdateUser(UserModel user)
+        public void UpdateUser(UserModel user)
         {
             _userContext.Attach(user).State = EntityState.Modified;
-            await _userContext.SaveChangesAsync();
+            _userContext.SaveChanges();
         }
 
         public async Task<UserModel> GetUser(int Id)
         {
+           
             return await _userContext.UserModels.FirstOrDefaultAsync(a => a.Id == Id);
         }
 
@@ -41,12 +40,11 @@ namespace ShiftPicker.Data.Services
 
         public async Task<List<UserModel>> GetAll()
         {
-           var x = await _userContext
-                        .UserModels
-                        .Include(u => u.Role)
-                        .ToListAsync();
-
-            return x;
+            return await _userContext
+                 .UserModels
+                 .Include(s => s.Role)
+                 .ToListAsync();
+           
         }
     }
 }

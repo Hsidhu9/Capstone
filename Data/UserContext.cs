@@ -21,7 +21,7 @@ namespace ShiftPicker.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserModel>().ToTable("User").HasKey(s => s.Id);
+            modelBuilder.Entity<UserModel>().ToTable("UserDetails").HasKey(s => s.Id);
             modelBuilder.Entity<UserModel>()
                         .HasOne(s => s.Role)
                         .WithMany(s => s.Users)

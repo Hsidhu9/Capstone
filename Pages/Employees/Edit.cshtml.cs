@@ -55,7 +55,7 @@ namespace ShiftPicker.Data.Models
             }
             try
             {
-                await _userService.UpdateUser(UserModel);
+               _userService.UpdateUser(UserModel);
             }
             catch (DbUpdateConcurrencyException)
             {

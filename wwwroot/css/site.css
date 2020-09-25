@@ -118,7 +118,7 @@ app {
     color: red;
 }
 .expand-menu-span{
-    font-size:x-small;
+    font-size:smaller;
     padding:5px;
 }
 

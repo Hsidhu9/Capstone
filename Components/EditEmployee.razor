@@ -3,10 +3,12 @@
 @inherits Shift_Picker.Components.EditEmployeeVM
 <h3>Edit User</h3>
 
+@if(Employee != null)
+{
 <div class="row">
     <div class="col" />
     <div class="col-5 card alert alert-secondary mt-4">
-        <h3>Create a new user</h3>
+        <h3>Edit User</h3>
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -36,10 +38,11 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Address</label>
-                <input class="form-control" type="text" placeholder="Address" @bind="Employee.Address" />
-                <input class="form-control" type="text" placeholder="City" @bind="Employee.City" />
-                <input class="form-control" type="text" placeholder="State" @bind="Employee.State" />
-                <input class="form-control" type="text" placeholder="Zip" @bind="Employee.Zip" />
+                <input class="form-control" type="text" placeholder="Address" @bind="Employee.Address" /><br />
+                <input class="form-control" type="text" placeholder="City" @bind="Employee.City" /><br />
+                <input class="form-control" type="text" placeholder="State" @bind="Employee.State" /><br />
+                <input class="form-control" type="text" placeholder="Zip" @bind="Employee.Zip" /><br />
+                <label class="control-label">Select Country</label><br />
                 <select @bind="Employee.Country">
                     <option value="USA"> USA </option>
                     <option value="Canada"> Canada </option>
@@ -47,7 +50,7 @@
 
             </div>
             <div class="form-group">
-                <label asp-for="UserModel.RoleId" class="control-label">Role</label>
+                <label asp-for="UserModel.RoleId" class="control-label">Select A Role</label><br />
 
                 <select @bind="Employee.RoleId">
                     @foreach (ShiftPicker.Data.Models.UserRole userRole in UserRoles)
@@ -57,9 +60,11 @@
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn" />
+                <input type="submit" value="Update" class="btn btn-primary" @onclick="UpdateEmployee"/>
             </div>
         </form>
     </div>
     <div class="col" />
 </div>
+}
+

@@ -35,12 +35,15 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Address</label>
-                <input class="form-control" type="text" placeholder="Address" @bind="Employee.Address" /><br/>
+                <input class="form-control" type="text" placeholder="Address" @bind="Employee.Address" /><br />
                 <input class="form-control" type="text" placeholder="City" @bind="Employee.City" /><br />
                 <input class="form-control" type="text" placeholder="State" @bind="Employee.State" /><br />
                 <input class="form-control" type="text" placeholder="Zip" @bind="Employee.Zip" /><br />
-                <select @bind="Employee.Country"> Select Country
-                    <option value="USA"> USA </option>
+
+                <label class="control-label">Country</label>
+                <select @bind="Employee.Country">
+                    Select Country
+                    <option value="Usa"> USA </option>
                     <option value="Canada"> Canada </option>
                 </select>
 

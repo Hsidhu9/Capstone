@@ -9,6 +9,6 @@ namespace ShiftPicker.Data.Models
     {
         public int Id { get; set; }
         public string RoleName { get; set; }
-        public HashSet<UserModel> Users { get; set; } = new HashSet<UserModel>();
+        public ICollection<UserModel> Users { get; set; } 
     }
 }

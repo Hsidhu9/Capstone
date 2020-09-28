@@ -30,7 +30,11 @@ namespace ShiftPicker.Data.Services
         public async Task<UserModel> GetUser(int Id)
         {
            
-            return await _userContext.UserModels.FirstOrDefaultAsync(a => a.Id == Id);
+            var user =  await _userContext
+                                .UserModels
+                                .Include(s => s.Role)
+                .FirstOrDefaultAsync(a => a.Id == Id);
+            return user;
         }
 
         public void DeleteUser(int id)
@@ -38,13 +42,29 @@ namespace ShiftPicker.Data.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<UserModel>> GetAll()
+        public async Task<List<UserModel>> GetAllEmployees()
         {
-            return await _userContext
-                 .UserModels
-                 .Include(s => s.Role)
-                 .ToListAsync();
-           
+            List<UserModel> employees = await _userContext
+                                        .UserRoles
+                                        .Include(s => s.Users)
+                                        .Where(s => s.RoleName.ToUpper().Equals("EMPLOYEE"))
+                                        .Select(s => s.Users.ToList())
+                                        .FirstOrDefaultAsync();
+
+
+            return employees;
+        }
+
+
+        public async Task<List<UserModel>> GetAllSupervisors()
+        {
+            List<UserModel> supervisors = await _userContext
+                                          .UserRoles
+                                          .Include(s => s.Users)
+                                          .Where(s => s.RoleName.ToUpper().Equals("SUPERVISOR"))
+                                          .Select(s => s.Users.ToList())
+                                          .FirstOrDefaultAsync();
+            return supervisors;
         }
     }
 }

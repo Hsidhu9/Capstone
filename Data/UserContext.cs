@@ -31,7 +31,7 @@ namespace ShiftPicker.Data
             modelBuilder.Entity<UserRole>()
                         .HasMany(s => s.Users)
                         .WithOne(s => s.Role)
-                        .HasForeignKey(c => c.Id);
+                        .HasForeignKey(c => c.RoleId);
                         
             modelBuilder.Entity<ShiftDetailModel>().ToTable("ShiftDetails").HasKey(c => c.Id);
             modelBuilder.Entity<ShiftDetailModel>()

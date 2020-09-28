@@ -8,7 +8,9 @@ namespace ShiftPicker.Data.Services
     {
         void AddUser(UserModel user);
         void DeleteUser(int id);
-        Task<List<UserModel>> GetAll();
+        Task<List<UserModel>> GetAllEmployees();
+
+        Task<List<UserModel>> GetAllSupervisors();
         Task<UserModel> GetUser(int Id);
         void UpdateUser(UserModel user);
     }

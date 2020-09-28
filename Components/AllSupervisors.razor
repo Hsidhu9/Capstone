@@ -1,20 +1,19 @@
-﻿@page "/showAllEmployees"
+﻿@page  "/ShowAllSupervisors"
 @namespace Shift_Picker.Components
-@inherits Shift_Picker.Components.AllEmployeesVM
-
-<h1>All Users</h1>
+@inherits Shift_Picker.Components.AllSupervisorsVM
+<h3>AllSupervisors</h3>
 
 <p>
-    <a> All Employees</a>
+    <a>All Supervisors</a>
 </p>
 @if (AllUsers == null)
 {
     <div class="spinner-border text-primary"></div>
 }
-
 @if (AllUsers.Count == 0)
 {
     <p> There are No Supervisor right now</p>
+    
 }
 else
 {
@@ -39,10 +38,10 @@ else
                 <th>
                     Address
                 </th>
-                
                 <th>
                     Action
                 </th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -68,8 +67,7 @@ else
                         @item.Address, @item.City, @item.State, @item.Zip, @item.Country
                     </td>
                     <td>
-                        <a href="employee/edit/@item.Id">Edit</a> |
-                        
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
                         <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
                     </td>
                 </tr>
@@ -78,3 +76,8 @@ else
     </table>
 }
 
+
+
+@code {
+
+}

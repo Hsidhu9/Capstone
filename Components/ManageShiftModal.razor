@@ -5,28 +5,67 @@
 @code {
 
 }
+<div>Modal has opened</div>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch Shift Modal
+
+The bootstrap modal depends on java script manipulating css classes and styles directly on the element. I quickly knocked this up to show how Blazer can be used to manipulate the same classes it is not complete.
+
+Modal.razor
+
+<button class="btn btn-primary" @onclick="ToggleModal">
+    Launch demo modal
 </button>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="@modalClass" tabindex="-1" style="display: @displayMode;">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Drop Shift</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title">Drop Shift</h5>
+                <button class="close" @onclick="ToggleModal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Apply</button>
-                <button type="button" class="btn btn-primary">Cancel</button>
-            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class=" col-md-4">
+                            <h6>Start Time: </h6><input type="time" id="startTime" name="Time1"
+                                                        min="09:00" max="18:00" required>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>End Time:</h6><input type="time" id="endTime" name="Time2"
+                                                     min="09:00" max="18:00" required>
+                        </div>
+                        <div class="col-md-4">
+                            <h6>Employees</h6><input type="number" id="employees" name="employeesNeeded"
+                                                     min="1" max="100" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="ToggleModal">Cancel</button>
+                    <button class="btn btn-primary">Apply</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+
+@code {
+
+    bool open = false;
+    string modalClass => open ? "modal fade show" : "modal fade";
+    string displayMode => open ? "block" : "none";
+
+
+    private void ToggleModal()
+    {
+        open = !open;
+        StateHasChanged();
+    }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+}
+

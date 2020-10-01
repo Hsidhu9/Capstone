@@ -9,9 +9,9 @@ namespace Shift_Picker.Components
     public class ManageShiftModalMV: OwningComponentBase
     {
         protected async override Task OnInitializedAsync()
-    {
-
-    }
+        {
+            await base.OnInitializedAsync();
+        }
 
     }
 

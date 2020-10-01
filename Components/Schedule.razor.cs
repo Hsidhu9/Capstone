@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.Modal.Services;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,9 @@ namespace Shift_Picker.Components
         private DateTime BeginOfWeekDateTime { get; set; }
 
         private DateTime EndOfWeekDateTime { get; set; }
+
+        [Inject]
+        protected IModalService ModalService { get; set; }
         protected async override Task OnInitializedAsync()
         {
             Today = DateTime.Now;
@@ -77,5 +81,9 @@ namespace Shift_Picker.Components
 
         }
 
+        protected void OpenManageShiftsModal()
+        {
+            ModalService.Show<ManageShiftModal>("Manage Shifts");
+        }
     }
 }

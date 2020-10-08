@@ -12,7 +12,8 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddServices(this IServiceCollection services) 
         {
             services.AddScoped<IUserService, UserService>()
-                    .AddScoped<IUserRoleService, UserRoleService>();
+                    .AddScoped<IUserRoleService, UserRoleService>()
+                    .AddScoped<IShiftService, ShiftService>();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace ShiftPicker.Data.Controller
         public ShiftModel Get(int id)
         {
 
-            return _ShiftService.GetShift(id);
+            return new ShiftModel();
         }
 
 

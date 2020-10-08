@@ -9,9 +9,24 @@ namespace ShiftPicker.Data
 {
     public class LoginService : ILoginService
     {
+        private readonly UserContext _userContext;
+        public LoginService(UserContext userContext)
+        {
+            _userContext = userContext;
+        }
         public bool Authenticate(LoginModel loginModel)
         {
-            return true;
+           UserModel user = _userContext.UserModels.Where(s => s.UserName.Equals(loginModel.UserName) && 
+           s.Password.Equals(loginModel.Password)).FirstOrDefault();
+             
+            if(user == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

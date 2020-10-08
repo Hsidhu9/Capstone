@@ -1,15 +1,29 @@
-﻿@inherits LayoutComponentBase
+﻿@page "/{LoggedIn:bool}"
+@inherits LayoutComponentBase
 
-<div class="sidebar">
-    <NavMenu />
-</div>
-@*<div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>*@
 
-<div class="container-fluid">
-    @Body
-    
+@if (LoggedIn == true)
+{
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+    <div class="container-fluid">
+        @Body
+    </div>
+}
+else
+{
+    <Shift_Picker.Components.Login />
+}
 
-</div>
+
+
+@code{
+    [Parameter]
+    public bool LoggedIn { get; set; }
+
+    protected  override void OnInitialized()
+    {
+           
+    }
+}

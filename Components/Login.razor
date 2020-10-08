@@ -11,7 +11,7 @@
 <h3>Login</h3>
 
 <body>
-    <form method="POST" class="px-4 px-3">
+    <div class="px-4 px-3">
         <div class="form-group">
             <label for="uname">Username: </label>
             <input type="text" class="form-control" id="uname" name="username" @bind="User.UserName"><br>
@@ -21,6 +21,6 @@
             <input type="password" class="form-control" id="pword" name="password" @bind="User.Password"><br>
         </div>
         <button type="submit" class="btn btn-primary" @onclick="ValidateUser">Login</button>
-    </form>
+    </div>
 </body>
     

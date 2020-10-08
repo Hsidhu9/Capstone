@@ -26,12 +26,19 @@ namespace Shift_Picker.Components
             User = new UserModel();
         }
 
+        private bool IsLoading { get; set; }
+
+        protected override void OnInitialized()
+        {
+            IsLoading = false;
+        }
         protected  void ValidateUser()
         {
-            NavigationManager.NavigateTo("schedules");
             LoggingInUser.User = User;
-            bool isAuthenticated = LoginService.Authenticate();
-
+            LoginService.Authenticate();
+            IsLoading = true;
+            NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
+            return;
         }
     }
 

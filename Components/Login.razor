@@ -1,19 +1,26 @@
 ﻿@page "/login"
 @namespace Shift_Picker.Components
 @inherits Shift_Picker.Components.LoginVM
+<head>
+    <style>
+        h1 {
+            text-align:center;
+        }
+    </style>
+</head>
 <h3>Login</h3>
 
-
-<div>
-    <div class="form-group">
-        <label for="uname">Username: </label>
-        <input type="text" class="form-control" id="uname" name="username" @bind="User.UserName"><br>
-        <div class="alert alert-danger" role="alert"></div>
-    </div>
-    <div class="form-group">
-        <label for="pword">Password: </label>
-        <input type="password" class="form-control" id="pword" name="password" @bind="User.Password"><br>
-        <div class="alert alert-danger" role="alert"></div>
-    </div>
-    <button type="submit" class="btn btn-primary" @onclick="ValidateUser">Login</button>
-</div>
+<body>
+    <form method="POST" class="px-4 px-3">
+        <div class="form-group">
+            <label for="uname">Username: </label>
+            <input type="text" class="form-control" id="uname" name="username" @bind="User.UserName"><br>
+        </div>
+        <div class="form-group">
+            <label for="pword">Password: </label>
+            <input type="password" class="form-control" id="pword" name="password" @bind="User.Password"><br>
+        </div>
+        <button type="submit" class="btn btn-primary" @onclick="ValidateUser">Login</button>
+    </form>
+</body>
+    

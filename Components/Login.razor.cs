@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ShiftPicker.Data;
+using Blazored.SessionStorage;
 
 namespace Shift_Picker.Components
 {
@@ -15,19 +15,23 @@ namespace Shift_Picker.Components
         private ILoginService LoginService => ScopedServices.GetService<ILoginService>();
         protected UserModel User { get; set; }
 
+        [Inject]
+        protected LoginModel LoggingInUser { get; set; }
+
+        [Inject]
+        protected NavigationManager NavigationManager { get; set; }
+
         protected async override Task OnInitializedAsync()
         {
             User = new UserModel();
         }
 
-        protected void ValidateUser()
+        protected  void ValidateUser()
         {
-            LoginModel loginModel = new LoginModel
-            {
-                User = User
-            };
-            LoginService.Authenticate(loginModel);
-            
+            NavigationManager.NavigateTo("schedules");
+            LoggingInUser.User = User;
+            bool isAuthenticated = LoginService.Authenticate();
+
         }
     }
 

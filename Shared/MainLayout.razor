@@ -4,6 +4,11 @@
 
 @if (IsAuthenticated)
 {
+    <head>
+
+        <base href="~/" />
+
+    </head>
     <div class="sidebar">
         <NavMenu />
     </div>
@@ -17,25 +22,21 @@ else
 }
 
 @code{
-    //
-
     bool IsAuthenticated = false;
+
+    [Inject]
+    public ShiftPicker.Data.Models.LoginModel UserLoggedIn { get; set; }
 
     protected override void OnInitialized()
     {
-
+        //If not present show the log in screen
+        IsAuthenticated = UserLoggedIn.IsAuthenticated;
     }
 
     protected override void OnAfterRender(bool firstRender)
     {
-        //Get the User Logged in From Session Storage
-        ShiftPicker.Data.Models.LoginModel loggedInUser =  sessionStorage.GetItem<ShiftPicker.Data.Models.LoginModel>("user_logged_in");
 
-        //If not present show the log in screen
-        if (loggedInUser != null)
-        {
-            IsAuthenticated = true;
-        }
+
 
         //If Present in the session storage then set IsAuthenticated to true
         //else show an error

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShiftPicker.Data;
+using ShiftPicker.Data.Models;
 
 namespace Shift_Picker
 {
@@ -42,6 +43,7 @@ namespace Shift_Picker
             services.AddBlazoredSessionStorage(config =>
                 config.JsonSerializerOptions.WriteIndented = true);
 
+            services.AddSingleton<LoginModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

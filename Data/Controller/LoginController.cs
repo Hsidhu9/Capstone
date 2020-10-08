@@ -19,7 +19,7 @@ namespace ShiftPicker.Data.Controller
         [HttpPost]
         public bool Authenticate([FromBody]LoginModel loginModel)
         {
-            return _authenticationService.Authenticate(loginModel);
+            return _authenticationService.Authenticate();
         }
     }
 }

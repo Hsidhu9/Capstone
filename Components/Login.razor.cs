@@ -22,9 +22,10 @@ namespace Shift_Picker.Components
 
         protected void ValidateUser()
         {
-            LoginModel loginModel = new LoginModel();
-            loginModel.UserName = User.UserName;
-            loginModel.Password = User.Password;
+            LoginModel loginModel = new LoginModel
+            {
+                User = User
+            };
             LoginService.Authenticate(loginModel);
             
         }

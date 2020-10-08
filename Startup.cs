@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Blazored.Modal;
+using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +39,8 @@ namespace Shift_Picker
                               sqlOptions.EnableRetryOnFailure();
                           });
             });
+            services.AddBlazoredSessionStorage(config =>
+                config.JsonSerializerOptions.WriteIndented = true);
 
         }
 

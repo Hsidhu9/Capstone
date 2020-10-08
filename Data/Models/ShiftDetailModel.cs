@@ -12,6 +12,5 @@ namespace ShiftPicker.Data.Models
         public int ShiftId { get; set; }
         public ShiftModel Shift { get; set; }
         public int PickedByEmployee { get; set; }
-        public UserModel PickedByUser { get; set; }
     }
 }

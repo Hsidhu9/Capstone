@@ -39,7 +39,6 @@ namespace Shift_Picker
                               sqlOptions.EnableRetryOnFailure();
                           });
             });
-            services.AddBlazoredModal();
 
         }
 

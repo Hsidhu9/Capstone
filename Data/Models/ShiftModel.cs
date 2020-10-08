@@ -8,10 +8,11 @@ namespace ShiftPicker.Data.Models
     public class ShiftModel
     {
         public int Id { get; set; }
-        public DateTime StartDateTime { get; set; }
-        public DateTime EndDateTime { get; set; }
-        public UserModel CreatedBy { get; set; }
-        public int NumberOfEmployeesNeeded { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+
+        public int CreatedBy { get; set; }
+        public int EmployeesNeeded { get; set; }
         public ICollection<ShiftDetailModel> ShiftDetails { get; set; }
     }
 }

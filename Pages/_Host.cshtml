@@ -32,6 +32,19 @@
         <a class="dismiss">🗙</a>
     </div>
 
-    <script src="_framework/blazor.server.js"></script>
+    <script src="_framework/blazor.server.js">
+        function assignSelectedTimeClass(startElementId , endElementId ) {
+            var startElementIndex = startElementId[startElementId.length - 1];
+            var endElementIndex = endElementId[endElementId.length - 1];
+
+            var dayOfWeek = startElementId.substr(0, startElementIndex)
+
+            for (var i = startElementIndex; i <= endElementIndex; i++) {
+
+            
+                var x = document.getElementById(dayOfWeek + i);
+                x.classList.Add('event');
+            }
+    </script>
 </body>
 </html>

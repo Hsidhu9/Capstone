@@ -8,6 +8,13 @@ html, body {
 a, .btn-link {
     color: #0366d6;
 }
+.centered {
+    position: fixed;
+    top: 30%;
+    left: 60%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
 
 .btn-primary {
     color: #fff;

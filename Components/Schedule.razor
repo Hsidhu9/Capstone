@@ -276,22 +276,33 @@
                         @foreach (var day in AllDaysOfWeek)
                         {
 
-                            @if (day.AddHours(j) >= DateTime.Now)
+                            @if (SelectedShiftsElementIds.ContainsKey(day.Date.ToString() + j))
                             {
-                                @if (SelectedShiftsElementIds.ContainsKey(day.Date.ToString() + j))
+                                @if (day.AddHours(j) >= DateTime.Now)
                                 {
                                     <td class="event"
                                         @onclick="() => SelectedShiftAsEmployee(SelectedShiftsElementIds[day.Date.ToString() + j].GetValueOrDefault())" />
                                 }
                                 else
                                 {
-                                    <td class="headcol"
-                                        @onclick="() => SetStartTimeAndDate(day, j.ToString())" />
+                                    //incase the number of employees needed is equal to number of
+                                    //shift details then event class needs to be removed
+                                    <td class="event inactive"></td>
                                 }
+
                             }
                             else
                             {
-                                <td class="inactive" />
+                                @if (day.AddHours(j) >= DateTime.Now)
+                                {
+                                    <td class="headcol"
+                                        @onclick="() => SetStartTimeAndDate(day, j.ToString())" />
+                                }
+                                else
+                                {
+                                    <td class="inactive"></td>
+                                }
+
                             }
                         }
 
@@ -369,9 +380,13 @@
 
     private void SetStartTimeAndDate(DateTime dayOfWeek, string hourOfDay)
     {
-        ToggleModal();
-        SelectedStartDateTime = dayOfWeek.AddHours(Convert.ToDouble(hourOfDay));
-        SelectedEndDateTime = SelectedStartDateTime.AddHours(2);
+        if(LoggedInUser.User.RoleId != 4)
+        {
+            ToggleModal();
+            SelectedStartDateTime = dayOfWeek.AddHours(Convert.ToDouble(hourOfDay));
+            SelectedEndDateTime = SelectedStartDateTime.AddHours(2);
+        }
+
     }
 
     protected async Task AddShiftAsync()
@@ -388,6 +403,7 @@
 
             AddShifts(SelectedStartDateTime, SelectedEndDateTime, NumberOfEmployeesNeeded);
         }
+        ToggleModal();
     }
 
 

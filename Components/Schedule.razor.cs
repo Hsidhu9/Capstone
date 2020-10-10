@@ -54,6 +54,8 @@ namespace Shift_Picker.Components
         #endregion
         protected string ErrorMessage { get; set; }
 
+        [Inject]
+        protected LoginModel LoggedInUser { get; set; }
         protected Dictionary<string,int?> SelectedShiftsElementIds { get; set; } = new Dictionary<string, int?>();
 
         private IShiftService ShiftService => ScopedServices.GetService<IShiftService>();
@@ -67,10 +69,10 @@ namespace Shift_Picker.Components
 
         private void PopulateShifts()
         {
-            List<ShiftModel> shifts = ShiftService.GetShiftsForDateRange(Day1Week, Day7Week);
+            List<ShiftModel> shifts = ShiftService.GetShiftsForDateRange(Day1Week, Day7Week.AddHours(24));
             foreach(var shift in shifts)
             {
-                for (int i = shift.StartTime.Hour; i <= shift.EndTime.Hour; i++)
+                for (int i = shift.StartTime.Hour; i < shift.EndTime.Hour; i++)
                 {
                     SelectedShiftsElementIds.Add(shift.StartTime.Date.ToString() + i, shift.Id);
                 }
@@ -151,11 +153,15 @@ namespace Shift_Picker.Components
 
         protected void SelectedShiftAsEmployee(int shiftId)
         {
-            ShiftDetailModel shiftDetail = new ShiftDetailModel
+            if(LoggedInUser.User.RoleId == 4)
             {
-                PickedByEmployee = 3,
-                ShiftId = shiftId
-            };
+                ShiftDetailModel shiftDetail = new ShiftDetailModel
+                {
+                    PickedByEmployee = LoggedInUser.User.Id,
+                    ShiftId = shiftId
+                };
+
+            }
 
         }
 

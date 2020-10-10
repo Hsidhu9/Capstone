@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Shift_Picker.Components
 {
-    public partial class UserProfileMV : OwningComponentBase
+    public class UserProfileVM : OwningComponentBase
     {
         private IUserService UserService => ScopedServices.GetService<IUserService>();
 

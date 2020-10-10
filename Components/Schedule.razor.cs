@@ -52,6 +52,10 @@ namespace Shift_Picker.Components
 
         protected int NumberOfEmployeesNeeded { get; set; }
         #endregion
+
+        [Inject]
+        protected ShiftPicker.Data.Models.LoginModel LoggedInUser { get; set; }
+
         protected string ErrorMessage { get; set; }
 
         protected Dictionary<string,int?> SelectedShiftsElementIds { get; set; } = new Dictionary<string, int?>();
@@ -143,7 +147,7 @@ namespace Shift_Picker.Components
                 StartTime = startDateTime,
                 EndTime = endDateTime,
                 EmployeesNeeded = numberOfEmployeedNeeded,
-                CreatedBy = 1
+                CreatedBy = LoggedInUser.User.RoleId
             };
 
             ShiftService.AddShift(shiftModel);
@@ -151,11 +155,17 @@ namespace Shift_Picker.Components
 
         protected void SelectedShiftAsEmployee(int shiftId)
         {
-            ShiftDetailModel shiftDetail = new ShiftDetailModel
+            if(LoggedInUser.User.RoleId == 4)
             {
-                PickedByEmployee = 3,
-                ShiftId = shiftId
-            };
+                ShiftDetailModel shiftDetail = new ShiftDetailModel
+                {
+                    PickedByEmployee = LoggedInUser.User.Id,
+                    ShiftId = shiftId
+                };
+
+                //Add the ShiftDetail
+            }
+            
 
         }
 

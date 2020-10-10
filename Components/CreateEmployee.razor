@@ -6,7 +6,7 @@
     <div class="col"/>
     <div class="col-5 card alert alert-secondary mt-4">
         <h3>Create a new user</h3>
-        <form method="post">
+        <div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label class="control-label">First Name</label>
@@ -61,7 +61,7 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn" @onclick="AddEmployee" />
             </div>
-        </form>
+        </div>
     </div>
     <div class="col"/>
 </div>

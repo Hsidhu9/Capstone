@@ -278,7 +278,7 @@
 
                             @if (day.AddHours(j) >= DateTime.Now)
                             {
-                                @if (SelectedShiftsElementIds.ContainsKey(day.Date.ToString() + j))
+                                @if ((SelectedShiftsElementIds.ContainsKey(day.Date.ToString() + j)))
                                 {
                                     <td class="event"
                                         @onclick="() => SelectedShiftAsEmployee(SelectedShiftsElementIds[day.Date.ToString() + j].GetValueOrDefault())" />
@@ -312,7 +312,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post">
+            <div>
                 <div class="modal-body">
                     <div class="row">
                         <div class=" col-md-4">
@@ -343,7 +343,7 @@
                         <span>@ErrorMessage</span>
                     }
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
@@ -369,9 +369,13 @@
 
     private void SetStartTimeAndDate(DateTime dayOfWeek, string hourOfDay)
     {
-        ToggleModal();
-        SelectedStartDateTime = dayOfWeek.AddHours(Convert.ToDouble(hourOfDay));
-        SelectedEndDateTime = SelectedStartDateTime.AddHours(2);
+        if(LoggedInUser.User.RoleId != 4)
+        {
+            ToggleModal();
+            SelectedStartDateTime = dayOfWeek.AddHours(Convert.ToDouble(hourOfDay));
+            SelectedEndDateTime = SelectedStartDateTime.AddHours(2);
+        }
+
     }
 
     protected async Task AddShiftAsync()
@@ -387,6 +391,7 @@
             }
 
             AddShifts(SelectedStartDateTime, SelectedEndDateTime, NumberOfEmployeesNeeded);
+            ToggleModal();
         }
     }
 

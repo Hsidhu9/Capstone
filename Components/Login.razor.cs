@@ -26,17 +26,10 @@ namespace Shift_Picker.Components
             User = new UserModel();
         }
 
-        private bool IsLoading { get; set; }
-
-        protected override void OnInitialized()
-        {
-            IsLoading = false;
-        }
         protected  void ValidateUser()
         {
             LoggingInUser.User = User;
             LoginService.Authenticate();
-            IsLoading = true;
             NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
             return;
         }

@@ -23,7 +23,7 @@ namespace ShiftPicker.Data
         public bool Authenticate()
         {
            UserModel user =  _userContext.UserModels.Include(s => s.Role)
-                                .Where(s => s.UserName.Equals(_loginModel.User.UserName) && 
+                                .Where(s => s.UserName.Equals(_loginModel.User.UserName, StringComparison.InvariantCultureIgnoreCase) && 
            s.Password.Equals(_loginModel.User.Password)).FirstOrDefault();
              
             if(user == null) 

@@ -23,7 +23,7 @@ namespace ShiftPicker.Data.Services
 
         public void UpdateUser(UserModel user)
         {
-            _userContext.Attach(user).State = EntityState.Modified;
+            _userContext.UserModels.Update(user);
             _userContext.SaveChanges();
         }
 

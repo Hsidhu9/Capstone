@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace Shift_Picker.Components
 {
-    public class UserProfileVM : OwningComponentBase
+    public class UserProfileViewModel : OwningComponentBase
     {
         private IUserService UserService => ScopedServices.GetService<IUserService>();
+        [Inject]
+        protected LoginModel LoggedInUser { get; set; }
 
-        protected List<UserModel> AllUsers { get; set; } = new List<UserModel>();
 
-        protected async override Task OnInitializedAsync()
+        protected void UpdateEmployee()
         {
-            AllUsers = await UserService.GetAllEmployees();
+            UserService.UpdateUser(LoggedInUser.User);
         }
     }
 }

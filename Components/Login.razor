@@ -1,0 +1,42 @@
+﻿@page "/login"
+@namespace Shift_Picker.Components
+@inherits Shift_Picker.Components.LoginVM
+
+
+
+    <div class="container centered">
+
+        <h3>Please Enter Your Credentials</h3>
+
+        <div class="col-8 card">
+
+            <div class="col-12 row">
+                <div>
+                    <h3 style="font-weight:bold; color:purple">Login</h3>
+                </div>
+                <div>
+                    <br />
+                </div>
+                <div class="col-12 row">
+                    <label for="uname">Username: </label>
+                    <input type="text" class="form-control" id="uname" name="username" @bind="User.UserName">
+                </div>
+                <div>
+                    <br />
+                </div>
+                <div class="col-12 row">
+                    <label for="pword">Password: </label>
+                    <input type="password" class="form-control" id="pword" name="password" @bind="User.Password">
+                </div>
+            </div>
+            <div>
+                <br />
+            </div>
+            <button type="submit" class="btn btn-primary" @onclick="ValidateUser">Login</button>
+            <div>
+                <br />
+            </div>
+        </div>
+    </div>
+
+    

@@ -1,15 +1,35 @@
 ﻿@inherits LayoutComponentBase
+@inject Blazored.SessionStorage.ISyncSessionStorageService sessionStorage
 
-<div class="sidebar">
-    <NavMenu />
-</div>
 
-<div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+@if (IsAuthenticated)
+{
+    <head>
+
+        <base href="~/" />
+
+    </head>
+    <div class="sidebar">
+        <NavMenu />
     </div>
-
-    <div class="content px-4">
+    <div class="container-fluid">
         @Body
     </div>
-</div>
+}
+else
+{
+    <Shift_Picker.Components.Login />
+}
+
+@code{
+    bool IsAuthenticated = false;
+
+    [Inject]
+    public ShiftPicker.Data.Models.LoginModel UserLoggedIn { get; set; }
+
+    protected override void OnInitialized()
+    {
+        //If not present show the log in screen
+        IsAuthenticated = UserLoggedIn.IsAuthenticated;
+    }
+}

@@ -15,20 +15,26 @@ namespace ShiftPicker.Data.Services
         {
             _userContext = userContext;
         }
-        public async Task  AddUser(UserModel user)
+        public void AddUser(UserModel user)
         {
-            await _userContext.UserModels.AddAsync(user);
-            await _userContext.SaveChangesAsync();
+            _userContext.Add(user);
+            _userContext.SaveChanges();
         }
 
         public void UpdateUser(UserModel user)
         {
-            throw new NotImplementedException();
+            _userContext.UserModels.Update(user);
+            _userContext.SaveChanges();
         }
 
-        public UserModel GetUser(int Id)
+        public async Task<UserModel> GetUser(int Id)
         {
-            return new UserModel();
+           
+            var user =  await _userContext
+                                .UserModels
+                                .Include(s => s.Role)
+                .FirstOrDefaultAsync(a => a.Id == Id);
+            return user;
         }
 
         public void DeleteUser(int id)
@@ -36,12 +42,29 @@ namespace ShiftPicker.Data.Services
             throw new NotImplementedException();
         }
 
-        public  async Task<List<UserModel>> GetAll()
+        public async Task<List<UserModel>> GetAllEmployees()
         {
-           return await _userContext
-                        .UserModels
-                        .Include(u => u.Role)
-                        .ToListAsync();
+            List<UserModel> employees = await _userContext
+                                        .UserRoles
+                                        .Include(s => s.Users)
+                                        .Where(s => s.RoleName.ToUpper().Equals("EMPLOYEE"))
+                                        .Select(s => s.Users.ToList())
+                                        .FirstOrDefaultAsync();
+
+
+            return employees;
+        }
+
+
+        public async Task<List<UserModel>> GetAllSupervisors()
+        {
+            List<UserModel> supervisors = await _userContext
+                                          .UserRoles
+                                          .Include(s => s.Users)
+                                          .Where(s => s.RoleName.ToUpper().Equals("SUPERVISOR"))
+                                          .Select(s => s.Users.ToList())
+                                          .FirstOrDefaultAsync();
+            return supervisors;
         }
     }
 }

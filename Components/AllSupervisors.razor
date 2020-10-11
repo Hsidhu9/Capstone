@@ -1,0 +1,83 @@
+﻿@page  "/ShowAllSupervisors"
+@namespace Shift_Picker.Components
+@inherits Shift_Picker.Components.AllSupervisorsVM
+<h3>AllSupervisors</h3>
+
+<p>
+    <a>All Supervisors</a>
+</p>
+@if (AllUsers == null)
+{
+    <div class="spinner-border text-primary"></div>
+}
+@if (AllUsers.Count == 0)
+{
+    <p> There are No Supervisor right now</p>
+    
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    FirstName
+                </th>
+                <th>
+                    LastName
+                </th>
+                <th>
+                    Username
+                </th>
+                <th>
+                    Password
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Address
+                </th>
+                <th>
+                    Action
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in AllUsers)
+            {
+                <tr>
+                    <td>
+                        @item.FirstName
+                    </td>
+                    <td>
+                        @item.LastName
+                    </td>
+                    <td>
+                        @item.UserName
+                    </td>
+                    <td>
+                        @item.Password
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td>
+                        @item.Address, @item.City, @item.State, @item.Zip, @item.Country
+                    </td>
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code {
+
+}

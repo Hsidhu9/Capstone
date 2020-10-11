@@ -1,4 +1,5 @@
-﻿using ShiftPicker.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ShiftPicker.Data.Models;
 using ShiftPicker.Data.Services;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,30 @@ namespace ShiftPicker.Data
 {
     public class LoginService : ILoginService
     {
-        public bool Authenticate(LoginModel loginModel)
+        private readonly UserContext _userContext;
+        private readonly LoginModel _loginModel;
+
+        public LoginService(UserContext userContext, LoginModel loginModel)
         {
-            return true;
+            _userContext = userContext;
+            _loginModel = loginModel;
+        }
+
+
+        public bool Authenticate()
+        {
+           UserModel user =  _userContext.UserModels.Include(s => s.Role)
+                                .Where(s => s.UserName.Equals(_loginModel.User.UserName, StringComparison.InvariantCultureIgnoreCase) && 
+           s.Password.Equals(_loginModel.User.Password)).FirstOrDefault();
+             
+            if(user == null) 
+                return false;
+            else
+            {
+                _loginModel.IsAuthenticated = true;
+                _loginModel.User = user;
+                return true;
+            }
         }
     }
 }

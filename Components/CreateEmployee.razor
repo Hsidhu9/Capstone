@@ -1,0 +1,72 @@
+﻿@page "/employee/create"
+@namespace Shift_Picker.Components.Employees
+@inherits Shift_Picker.Components.CreateEmployeeVM
+
+<div class="row">
+    <div class="col"/>
+    <div class="col-5 card alert alert-secondary mt-4">
+        <h3>Create a new user</h3>
+        <div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">First Name</label>
+                <input class="form-control" type="text" @bind="Employee.FirstName" />
+                <span asp-validation-for="UserModel.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Last Name</label>
+                <input class="form-control" type="text" name="UserModel.LastName" @bind="Employee.LastName" />
+                <span asp-validation-for="UserModel.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Username</label>
+                <input class="form-control" type="text" name="UserModel.UserName" @bind="Employee.UserName" />
+                <span asp-validation-for="UserModel.UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Password</label>
+                <input class="form-control" type="password" name="UserModel.Password" @bind="Employee.Password" />
+                <span asp-validation-for="UserModel.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Email</label>
+                <input class="form-control" type="email" name="UserModel.Email" @bind="Employee.Email" />
+                <span asp-validation-for="UserModel.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Address</label>
+                <input class="form-control" type="text" placeholder="Address" @bind="Employee.Address" /><br />
+                <input class="form-control" type="text" placeholder="City" @bind="Employee.City" /><br />
+                <input class="form-control" type="text" placeholder="State" @bind="Employee.State" /><br />
+                <input class="form-control" type="text" placeholder="Zip" @bind="Employee.Zip" /><br />
+
+                <label class="control-label">Country</label>
+                <select @bind="Employee.Country">
+                    Select Country
+                    <option value="Usa"> USA </option>
+                    <option value="Canada"> Canada </option>
+                </select>
+
+            </div>
+            <div class="form-group">
+                <label asp-for="UserModel.RoleId" class="control-label">Role</label>
+
+                <select @bind="Employee.RoleId">
+                    @foreach (ShiftPicker.Data.Models.UserRole userRole in UserRoles)
+                    {
+                        <option value="@userRole.Id"> @userRole.RoleName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn" @onclick="AddEmployee" />
+            </div>
+        </div>
+    </div>
+    <div class="col"/>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+

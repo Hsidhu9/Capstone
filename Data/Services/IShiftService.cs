@@ -1,4 +1,6 @@
 ﻿using ShiftPicker.Data.Models;
+using System;
+using System.Collections.Generic;
 
 namespace ShiftPicker.Data.Services
 {
@@ -6,7 +8,7 @@ namespace ShiftPicker.Data.Services
     {
         void AddShift(ShiftModel Shift);
         void DeleteShift(int id);
-        ShiftModel GetShift(int Id);
+        List<ShiftModel> GetShiftsForDateRange(DateTime startDateTime, DateTime endDateTime);
         void UpdateShift(ShiftModel Shift);
     }
 }

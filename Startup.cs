@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ShiftPicker.Data;
+using ShiftPicker.Data.Models;
 
 namespace Shift_Picker
 {
@@ -30,9 +32,18 @@ namespace Shift_Picker
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddServices();
-
             services.AddDbContext<UserContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("UserContext")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("UserContext"),
+                          sqlServerOptionsAction: sqlOptions =>
+                          {
+                              sqlOptions.EnableRetryOnFailure();
+                          });
+            });
+            services.AddBlazoredSessionStorage(config =>
+                config.JsonSerializerOptions.WriteIndented = true);
+
+            services.AddSingleton<LoginModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

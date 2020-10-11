@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShiftPicker.Data.Models;
+using ShiftPicker.Data.Services;
 
 namespace ShiftPicker.Data.Controller
 {
@@ -18,10 +19,10 @@ namespace ShiftPicker.Data.Controller
         }
         // GET: User/Details/5
         [HttpGet]
-        public UserModel Get(int id)
+        public async Task<UserModel> Get(int id)
         {
 
-            return _userService.GetUser(id);
+            return await _userService.GetUser(id);
         }
 
 

@@ -21,10 +21,34 @@ namespace ShiftPicker.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserModel>().ToTable("User");
-            modelBuilder.Entity<ShiftDetailModel>().ToTable("ShiftDetails");
-            modelBuilder.Entity<ShiftModel>().ToTable("Shift");
-            modelBuilder.Entity<UserRole>().ToTable("Roles");
+            modelBuilder.Entity<UserModel>().ToTable("UserDetails").HasKey(s => s.Id);
+            modelBuilder.Entity<UserModel>()
+                        .HasOne(s => s.Role)
+                        .WithMany(s => s.Users)
+                        .HasForeignKey(s => s.RoleId);
+            
+            modelBuilder.Entity<UserRole>().ToTable("Roles").HasKey(s => s.Id);
+            modelBuilder.Entity<UserRole>()
+                        .HasMany(s => s.Users)
+                        .WithOne(s => s.Role)
+                        .HasForeignKey(c => c.RoleId);
+                        
+            modelBuilder.Entity<ShiftDetailModel>().ToTable("ShiftDetails").HasKey(c => c.Id);
+            modelBuilder.Entity<ShiftDetailModel>()
+                        .HasOne(c => c.Shift)
+                        .WithMany(s => s.ShiftDetails)
+                        .HasForeignKey(a => a.ShiftId);
+
+            modelBuilder.Entity<ShiftModel>().ToTable("Shift").HasKey(c => c.Id);
+            modelBuilder.Entity<ShiftModel>()
+                        .HasMany(s => s.ShiftDetails)
+                        .WithOne(s => s.Shift)
+                        .HasForeignKey(s => s.ShiftId);
+        }
+
+        public override ValueTask DisposeAsync()
+        {
+            return base.DisposeAsync();
         }
     }
 }

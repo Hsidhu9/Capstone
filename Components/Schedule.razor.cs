@@ -77,7 +77,8 @@ namespace Shift_Picker.Components
             {
                 for (int i = shift.StartTime.Hour; i < shift.EndTime.Hour; i++)
                 {
-                    SelectedShiftsElementIds.Add(shift.StartTime.Date.ToString() + i, shift.Id);
+                    if(!SelectedShiftsElementIds.ContainsKey(shift.StartTime.Date.ToString() + i))
+                        SelectedShiftsElementIds.Add(shift.StartTime.Date.ToString() + i, shift.Id);
                 }
             }
         }
@@ -121,7 +122,7 @@ namespace Shift_Picker.Components
             Day5Week = BeginOfWeekDateTime.AddDays(4);
             Day6Week = BeginOfWeekDateTime.AddDays(5);
             Day7Week = BeginOfWeekDateTime.AddDays(6);
-
+            PopulateShifts();
         }
 
         protected void GetLastWeek()
@@ -138,7 +139,7 @@ namespace Shift_Picker.Components
             Day5Week = BeginOfWeekDateTime.AddDays(4);
             Day6Week = BeginOfWeekDateTime.AddDays(5);
             Day7Week = BeginOfWeekDateTime.AddDays(6);
-
+            PopulateShifts();
         }
 
         protected void AddShifts(DateTime startDateTime, DateTime endDateTime , int numberOfEmployeedNeeded)

@@ -10,6 +10,9 @@ using Blazored.SessionStorage;
 
 namespace Shift_Picker.Components
 {
+    /// <summary>
+    /// Code behind of Login Component
+    /// </summary>
     public class LoginVM : OwningComponentBase
     {
         private ILoginService LoginService => ScopedServices.GetService<ILoginService>();

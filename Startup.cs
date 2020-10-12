@@ -40,9 +40,6 @@ namespace Shift_Picker
                               sqlOptions.EnableRetryOnFailure();
                           });
             });
-            services.AddBlazoredSessionStorage(config =>
-                config.JsonSerializerOptions.WriteIndented = true);
-
             services.AddSingleton<LoginModel>();
         }
 

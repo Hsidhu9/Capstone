@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace Shift_Picker.Components 
 {
+    /// <summary>
+    ///  Code behind of Schedules Component
+    /// </summary>
     public partial class ScheduleVM: OwningComponentBase
     {
         #region DaysAndWeeks

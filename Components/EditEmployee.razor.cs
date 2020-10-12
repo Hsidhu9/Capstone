@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Shift_Picker.Components
 {
+    /// <summary>
+    ///  Code behind of Edit Employee Component
+    /// </summary>
     public class EditEmployeeVM : OwningComponentBase
     {
         [Parameter]

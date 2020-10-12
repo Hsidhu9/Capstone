@@ -2,6 +2,9 @@
 
 namespace ShiftPicker.Data.Services
 {
+    /// <summary>
+    /// Abstraction of Shift Detail Service
+    /// </summary>
     public interface IShiftDetailService
     {
         void AddShiftDetail(ShiftDetailModel ShiftDetail);

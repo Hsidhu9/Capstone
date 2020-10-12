@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Components;
 
 namespace Shift_Picker.Components
 {
+    /// <summary>
+    ///  Code behind of All Employees Component
+    /// </summary>
     public partial class AllEmployeesVM : OwningComponentBase
     {
         private IUserService UserService => ScopedServices.GetService<IUserService>();

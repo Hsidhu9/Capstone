@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace ShiftPicker.Data.Services
 {
+    /// <summary>
+    /// Abstraction of User Service
+    /// </summary>
     public interface IUserService
     {
         void AddUser(UserModel user);

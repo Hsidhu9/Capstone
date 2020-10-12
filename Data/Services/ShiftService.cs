@@ -11,6 +11,11 @@ namespace ShiftPicker.Data.Services
     {
         private readonly UserContext _userContext;
 
+        /// <summary>
+        /// The UserContext (Database context) is passed to the constrcutor from Dependency injection container, 
+        /// also known as IServiceCollection, We had added the DbContext in Startup.cs as services.AddDbContext()
+        /// </summary>
+        /// <param name="userContext"></param>
         public ShiftService(UserContext userContext)
         {
             _userContext = userContext;

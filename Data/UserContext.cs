@@ -7,6 +7,9 @@ using ShiftPicker.Data.Models;
 
 namespace ShiftPicker.Data
 {
+    /// <summary>
+    /// The Database Context For Shift_Picker Database
+    /// </summary>
     public class UserContext : DbContext
     {
         public UserContext (DbContextOptions<UserContext> options)
@@ -19,6 +22,11 @@ namespace ShiftPicker.Data
         public DbSet<ShiftModel> ShiftModels { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
 
+        /// <summary>
+        /// Configuring the Database Context
+        /// defining the shape of the entities, the relationships between them, and how they map to the database.
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserModel>().ToTable("UserDetails").HasKey(s => s.Id);
@@ -31,7 +39,7 @@ namespace ShiftPicker.Data
             modelBuilder.Entity<UserRole>()
                         .HasMany(s => s.Users)
                         .WithOne(s => s.Role)
-                        .HasForeignKey(c => c.RoleId);
+                        .HasForeignKey(s => s.RoleId);
                         
             modelBuilder.Entity<ShiftDetailModel>().ToTable("ShiftDetails").HasKey(c => c.Id);
             modelBuilder.Entity<ShiftDetailModel>()

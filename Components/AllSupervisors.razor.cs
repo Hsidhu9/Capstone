@@ -9,6 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Shift_Picker.Components
 {
+    /// <summary>
+    ///  Code behind of All Supervisors Component
+    /// </summary>
     public partial class AllSupervisorsVM: OwningComponentBase
     {
         private IUserService UserService => ScopedServices.GetService<IUserService>();

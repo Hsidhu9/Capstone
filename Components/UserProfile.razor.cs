@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Shift_Picker.Components
 {
+    /// <summary>
+    ///  Code behind of User Profile Component
+    /// </summary>
     public class UserProfileViewModel : OwningComponentBase
     {
         private IUserService UserService => ScopedServices.GetService<IUserService>();

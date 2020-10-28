@@ -62,6 +62,8 @@ namespace Shift_Picker.Components
         protected Dictionary<string,int?> SelectedShiftsElementIds { get; set; } = new Dictionary<string, int?>();
 
         private IShiftService ShiftService => ScopedServices.GetService<IShiftService>();
+
+        private IShiftDetailService ShiftDetailService => ScopedServices.GetService<IShiftDetailService>();
         protected override void OnInitialized()
         {
             SetGrid();
@@ -164,6 +166,8 @@ namespace Shift_Picker.Components
                     PickedByEmployee = LoggedInUser.User.Id,
                     ShiftId = shiftId
                 };
+
+                ShiftDetailService.AddShiftDetail(shiftDetail);
 
             }
 

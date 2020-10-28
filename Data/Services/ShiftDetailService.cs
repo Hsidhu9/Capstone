@@ -8,9 +8,15 @@ namespace ShiftPicker.Data.Services
 {
     public class ShiftDetailDetailService : IShiftDetailService
     {
+        private readonly UserContext _userContext;
+
+        public ShiftDetailDetailService(UserContext userContext)
+        {
+            _userContext = userContext;
+        }
         public void AddShiftDetail(ShiftDetailModel ShiftDetail)
         {
-            throw new NotImplementedException();
+            _userContext.ShiftDetailModels.Add(ShiftDetail);
         }
 
         public void UpdateShiftDetail(ShiftDetailModel ShiftDetail)

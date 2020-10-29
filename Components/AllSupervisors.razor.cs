@@ -16,6 +16,8 @@ namespace Shift_Picker.Components
     {
         private IUserService UserService => ScopedServices.GetService<IUserService>();
 
+        [Inject]
+        protected LoginModel LoggedInUser { get; set; }
         protected List<UserModel> AllUsers { get; set; } = new List<UserModel>();
 
         protected async override Task OnInitializedAsync()
@@ -23,5 +25,14 @@ namespace Shift_Picker.Components
             AllUsers = await UserService.GetAllSupervisors();
         }
 
+        public void ActivateUser(UserModel userModel)
+        {
+            UserService.ActivateUser(userModel);
+        }
+
+        public void DeactivateUser(UserModel userModel)
+        {
+            UserService.DeactivateUser(userModel);
+        }
     }
 }

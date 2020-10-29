@@ -68,9 +68,15 @@ else
                         @item.Address, @item.City, @item.State, @item.Zip, @item.Country
                     </td>
                     <td>
-                        <a href="employee/edit/@item.Id">Edit</a> |
-                        
-                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                        <a class="btn btn-primary" href="employee/edit/@item.Id">Edit</a>
+                        @if (item.isActive)
+                        {
+                            <button class="btn btn-primary" @onclick="() => DeactivateUser(item)">Deactivate</button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-primary" @onclick="() => ActivateUser(item)">Activate</button>
+                        }
                     </td>
                 </tr>
             }

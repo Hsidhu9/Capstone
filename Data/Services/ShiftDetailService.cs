@@ -17,6 +17,7 @@ namespace ShiftPicker.Data.Services
         public void AddShiftDetail(ShiftDetailModel ShiftDetail)
         {
             _userContext.ShiftDetailModels.Add(ShiftDetail);
+            _userContext.SaveChanges();
         }
 
         public void UpdateShiftDetail(ShiftDetailModel ShiftDetail)

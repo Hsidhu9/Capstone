@@ -49,20 +49,6 @@ namespace ShiftPicker.Data.Controller
         }
 
 
-        // POST: User/Delete/5
-        [HttpDelete]
-        [ValidateAntiForgeryToken]
-        public void Delete(int id)
-        {
-            try
-            {
-                _userService.DeleteUser(id);
-
-            }
-            catch
-            {
-                throw;
-            }
-        }
+       
     }
 }

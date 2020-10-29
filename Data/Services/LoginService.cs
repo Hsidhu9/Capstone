@@ -34,7 +34,7 @@ namespace ShiftPicker.Data
                                 .Where(s => s.UserName.Equals(_loginModel.User.UserName) && 
            s.Password.Equals(_loginModel.User.Password)).FirstOrDefault();
              
-            if(user == null) 
+            if(user == null || !user.isActive) 
                 return false;
             else
             {

@@ -151,7 +151,7 @@ namespace Shift_Picker.Components
                 StartTime = startDateTime,
                 EndTime = endDateTime,
                 EmployeesNeeded = numberOfEmployeedNeeded,
-                CreatedBy = 1
+                CreatedBy = LoggedInUser.User.Id
             };
 
             ShiftService.AddShift(shiftModel);

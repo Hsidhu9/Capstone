@@ -60,7 +60,12 @@
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Update" class="btn btn-primary" @onclick="UpdateEmployee"/>
+                <label asp-for="UserModel.IsActive" class="control-label">Is Active</label><br />
+
+                <input type="checkbox"  @bind="Employee.isActive"/>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Update" class="btn btn-primary" @onclick="UpdateEmployee" />
             </div>
         </div>
     </div>

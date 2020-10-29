@@ -22,5 +22,15 @@ namespace Shift_Picker.Components
         {
             AllUsers = await UserService.GetAllEmployees();
         }
+
+        public void ActivateUser(UserModel userModel)
+        {
+            UserService.ActivateUser(userModel);
+        }
+
+        public void DeactivateUser(UserModel userModel)
+        {
+            UserService.DeactivateUser(userModel);
+        }
     }
 }

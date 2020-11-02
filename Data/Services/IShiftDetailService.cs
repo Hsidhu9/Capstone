@@ -1,4 +1,6 @@
-﻿using ShiftPicker.Data.Models;
+﻿using Shift_Picker.Data.Models;
+using ShiftPicker.Data.Models;
+using System.Collections.Generic;
 
 namespace ShiftPicker.Data.Services
 {
@@ -8,7 +10,11 @@ namespace ShiftPicker.Data.Services
     public interface IShiftDetailService
     {
         void AddShiftDetail(ShiftDetailModel ShiftDetail);
-        void DeleteShiftDetail(int id);
+        void CancelShiftDetail(ShiftDetailModel shiftDetail);
+        void DeleteShiftDetail(ShiftDetailModel shiftDetail);
+        void DisapproveCancelShiftDetail(ShiftDetailModel shiftDetail);
+        List<ShiftDetailModel> GetAllShiftsForEmployee(int employeeId);
+        List<CancelRequestModel> GetCancelshiftRequests();
         ShiftDetailModel GetShiftDetail(int Id);
         void UpdateShiftDetail(ShiftDetailModel ShiftDetail);
     }

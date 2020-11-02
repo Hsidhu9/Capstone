@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.DependencyInjection;
 using ShiftPicker.Data.Models;
@@ -15,7 +16,7 @@ namespace Shift_Picker.Components
     /// <summary>
     ///  Code behind of Schedules Component
     /// </summary>
-    public partial class ScheduleVM: OwningComponentBase
+    public partial class ScheduleVM : OwningComponentBase
     {
         #region DaysAndWeeks
         public string BeginOfWeek { get; set; }
@@ -34,9 +35,9 @@ namespace Shift_Picker.Components
 
         private DateTime EndOfWeekDateTime { get; set; }
 
-        
 
-        protected int[] allDayHours = new int[23];
+
+        protected int[] allDayHours = new int[24];
 
         public List<DateTime> AllDaysOfWeek
         {
@@ -46,16 +47,18 @@ namespace Shift_Picker.Components
                 { Day1Week,Day2Week, Day3Week, Day4Week, Day5Week, Day6Week, Day7Week };
             }
         }
-        
-        
 
-        protected DateTime SelectedStartDateTime { get; set; }
 
-        protected DateTime SelectedEndDateTime { get; set; }
+
+        protected DateTime CreatedStartDateTime { get; set; }
+
+        protected DateTime CreatedEndDateTime { get; set; }
 
         protected int NumberOfEmployeesNeeded { get; set; }
         #endregion
         protected string ErrorMessage { get; set; }
+
+        protected List<ShiftModel> AllAvailableShifts{get;set;}
 
         [Inject]
         protected LoginModel LoggedInUser { get; set; }
@@ -71,11 +74,14 @@ namespace Shift_Picker.Components
             PopulateShifts();
         }
         
+        /// <summary>
+        /// Populating all the shifts created for the week in display
+        /// </summary>
 
         private void PopulateShifts()
         {
-            List<ShiftModel> shifts = ShiftService.GetShiftsForDateRange(Day1Week, Day7Week.AddHours(24));
-            foreach(var shift in shifts)
+            AllAvailableShifts = ShiftService.GetShiftsForDateRange(Day1Week, Day7Week.AddHours(24));
+            foreach(var shift in AllAvailableShifts)
             {
                 for (int i = shift.StartTime.Hour; i < shift.EndTime.Hour; i++)
                 {

@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     .AddScoped<IUserRoleService, UserRoleService>()
                     .AddScoped<ILoginService, LoginService>()
                     .AddScoped<IShiftService, ShiftService>()
-                    .AddScoped<IShiftDetailService, ShiftDetailDetailService>();
+                    .AddScoped<IShiftDetailService, ShiftDetailService>();
         }
     }
 }

@@ -14,11 +14,15 @@ namespace Shift_Picker.Components
         private IShiftDetailService ShiftDetailService => ScopedServices.GetService<IShiftDetailService>();
         protected List<ShiftModel> AllShifts { get; set; } = new List<ShiftModel>();
 
+        public DateTime Today { get; set; }
+
         protected List<ShiftDetailModel> AllShiftDetails { get; set; } = new List<ShiftDetailModel>();
         [Inject]
         protected LoginModel LoggedInUser { get; set; }
         protected override void OnInitialized()
         {
+            var currentTimeZone = TimeZoneInfo.FindSystemTimeZoneById("US Mountain Standard Time");
+            Today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, currentTimeZone);
             AllShiftDetails =  ShiftDetailService.GetAllShiftsForEmployee(LoggedInUser.User.Id);
             AllShifts = AllShiftDetails.Select(s => s.Shift).ToList();
         }

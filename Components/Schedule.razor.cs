@@ -102,9 +102,10 @@ namespace Shift_Picker.Components
 
         protected void SetGrid()
         {
-            Today = DateTime.Now;
-            BeginOfWeekDateTime = DateTime.Now.AddDays(-(int)Today.DayOfWeek).Date;
-            EndOfWeekDateTime = DateTime.Now.AddDays(6 - (int)Today.DayOfWeek).Date;
+            var currentTimeZone = TimeZoneInfo.FindSystemTimeZoneById("US Mountain Standard Time");
+            Today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, currentTimeZone);
+            BeginOfWeekDateTime = Today.AddDays(-(int)Today.DayOfWeek).Date;
+            EndOfWeekDateTime = Today.AddDays(6 - (int)Today.DayOfWeek).Date;
             BeginOfWeek = BeginOfWeekDateTime.ToString("M");
             EndOfWeek = EndOfWeekDateTime.ToString("M");
             Day1Week = BeginOfWeekDateTime.Date;

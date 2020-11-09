@@ -288,7 +288,7 @@
                         {
 
                             //If the date/time is in future in must be active, else inactive
-                            @if (day.AddHours(j) >= DateTime.Now)
+                            @if (day.AddHours(j) >= Today)
                             {
                                 //If the date/time has a shift created for it, it must show in blue
                                 @if (SelectedShiftsElementIds.ContainsKey(day.Date.ToString() + j))

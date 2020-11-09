@@ -102,8 +102,10 @@ namespace Shift_Picker.Components
 
         protected void SetGrid()
         {
+            //converting times based on US Mountain standard time, as it does not get the correct time when deployed to azure
             var currentTimeZone = TimeZoneInfo.FindSystemTimeZoneById("US Mountain Standard Time");
             Today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, currentTimeZone);
+
             BeginOfWeekDateTime = Today.AddDays(-(int)Today.DayOfWeek).Date;
             EndOfWeekDateTime = Today.AddDays(6 - (int)Today.DayOfWeek).Date;
             BeginOfWeek = BeginOfWeekDateTime.ToString("M");

@@ -21,8 +21,10 @@ namespace Shift_Picker.Components
         protected LoginModel LoggedInUser { get; set; }
         protected override void OnInitialized()
         {
+            //converting times based on US Mountain standard time, as it does not get the correct time when deployed to azure
             var currentTimeZone = TimeZoneInfo.FindSystemTimeZoneById("US Mountain Standard Time");
             Today = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, currentTimeZone);
+
             AllShiftDetails =  ShiftDetailService.GetAllShiftsForEmployee(LoggedInUser.User.Id);
             AllShifts = AllShiftDetails.Select(s => s.Shift).ToList();
         }

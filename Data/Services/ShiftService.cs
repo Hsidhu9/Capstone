@@ -20,17 +20,31 @@ namespace ShiftPicker.Data.Services
         {
             _userContext = userContext;
         }
+
+        /// <summary>
+        /// Adding shift, when shift is created by supervisor/manager
+        /// </summary>
+        /// <param name="Shift"></param>
         public void AddShift(ShiftModel Shift)
         {
             _userContext.ShiftModels.Add(Shift);
             _userContext.SaveChanges();
         }
-
+        /// <summary>
+        /// Not implemented
+        /// </summary>
+        /// <param name="Shift"></param>
         public void UpdateShift(ShiftModel Shift)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Getting shifts, shift details for a date range
+        /// </summary>
+        /// <param name="startDateTime"></param>
+        /// <param name="endDateTime"></param>
+        /// <returns></returns>
         public List<ShiftModel> GetShiftsForDateRange(DateTime startDateTime, DateTime endDateTime)
         {
             return _userContext
@@ -40,6 +54,10 @@ namespace ShiftPicker.Data.Services
                 .ToList();
         }
 
+        /// <summary>
+        /// Not implemented yet
+        /// </summary>
+        /// <param name="id"></param>
         public void DeleteShift(int id)
         {
             throw new NotImplementedException();

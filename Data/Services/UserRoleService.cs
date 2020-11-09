@@ -20,11 +20,22 @@ namespace ShiftPicker.Data.Services
         {
             _userContext = userContext;
         }
+
+        /// <summary>
+        /// Creating a user role
+        /// </summary>
+        /// <param name="userRole"></param>
+        /// <returns></returns>
         public async Task CreateUserRole(UserRole userRole)
         {
             await _userContext.UserRoles.AddAsync(userRole);
             await _userContext.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Getting all the User Roles
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<UserRole>> GetAll()
         {
             return await _userContext.UserRoles.ToListAsync();

@@ -58,15 +58,35 @@ namespace Shift_Picker.Components
         #endregion
         protected string ErrorMessage { get; set; }
 
+        /// <summary>
+        /// All the avaialble shifts for that week, these are populated from db upon page load
+        /// </summary>
         protected List<ShiftModel> AllAvailableShifts{get;set;}
 
+        /// <summary>
+        /// Getting the logged in User from the Dependency Inhjection container, which was injected as singleton
+        /// </summary>
         [Inject]
         protected LoginModel LoggedInUser { get; set; }
+
+        /// <summary>
+        /// Creating a Dictionary to appropriatly display time slots on the Week Grid, the key is the Date and time and the value is the shift id
+        /// </summary>
         protected Dictionary<string,int?> SelectedShiftsElementIds { get; set; } = new Dictionary<string, int?>();
 
+        /// <summary>
+        /// Getting the ShiftService from dependency Injection Container, which was injected as scoped
+        /// </summary>
         private IShiftService ShiftService => ScopedServices.GetService<IShiftService>();
 
+        /// <summary>
+        /// Getting the ShiftDetailService from dependency Injection Container, which was injected as scoped
+        /// </summary>
         private IShiftDetailService ShiftDetailService => ScopedServices.GetService<IShiftDetailService>();
+
+        /// <summary>
+        /// This method is called when the page is loaded
+        /// </summary>
         protected override void OnInitialized()
         {
             SetGrid();
@@ -90,6 +110,10 @@ namespace Shift_Picker.Components
                 }
             }
         }
+
+        /// <summary>
+        /// Setting all the hours of the day that is 0-23
+        /// </summary>
         protected void SetAllHours()
         {
             int i = 0;
@@ -100,6 +124,9 @@ namespace Shift_Picker.Components
             }
         }
 
+        /// <summary>
+        /// Setting the grid to display current week
+        /// </summary>
         protected void SetGrid()
         {
             //converting times based on US Mountain standard time, as it does not get the correct time when deployed to azure
@@ -118,7 +145,10 @@ namespace Shift_Picker.Components
             Day6Week = BeginOfWeekDateTime.AddDays(5);
             Day7Week = BeginOfWeekDateTime.AddDays(6);
         }
-        
+
+        /// <summary>
+        /// Setting the grid to display the next week
+        /// </summary>
         protected void GetNextWeek()
         {
             DateTime sevenDaysFromPreviousWeek = EndOfWeekDateTime.AddDays(1);
@@ -136,6 +166,9 @@ namespace Shift_Picker.Components
             PopulateShifts();
         }
 
+        /// <summary>
+        /// Setting the grid to display the previous week
+        /// </summary>
         protected void GetLastWeek()
         {
             DateTime sevenDaysFromNextWeek = BeginOfWeekDateTime.AddDays(-7);
@@ -153,6 +186,13 @@ namespace Shift_Picker.Components
             PopulateShifts();
         }
 
+
+        /// <summary>
+        /// Creating the shift, adding the shift to database, as a supervisor/manager
+        /// </summary>
+        /// <param name="startDateTime"></param>
+        /// <param name="endDateTime"></param>
+        /// <param name="numberOfEmployeedNeeded"></param>
         protected void AddShifts(DateTime startDateTime, DateTime endDateTime , int numberOfEmployeedNeeded)
         {
             ShiftModel shiftModel = new ShiftModel()
@@ -166,6 +206,10 @@ namespace Shift_Picker.Components
             ShiftService.AddShift(shiftModel);
         }
 
+        /// <summary>
+        /// Selecting the shift as an employee
+        /// </summary>
+        /// <param name="shiftId"></param>
         protected void SelectedShiftAsEmployee(int shiftId)
         {
             if(LoggedInUser.User.RoleId == 4)

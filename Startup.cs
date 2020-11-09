@@ -29,6 +29,7 @@ namespace Shift_Picker
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //Adding services to dependency injection container
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddServices();

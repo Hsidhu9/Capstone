@@ -20,18 +20,29 @@ namespace ShiftPicker.Data.Services
         {
             _userContext = userContext;
         }
+        /// <summary>
+        /// Adding a user to db
+        /// </summary>
+        /// <param name="user"></param>
         public void AddUser(UserModel user)
         {
             _userContext.UserModels.Add(user);
             _userContext.SaveChanges();
         }
-
+        /// <summary>
+        /// updateing the user in db
+        /// </summary>
+        /// <param name="user"></param>
         public void UpdateUser(UserModel user)
         {
             _userContext.UserModels.Update(user);
             _userContext.SaveChanges();
         }
-
+        /// <summary>
+        /// Get a user by user id
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public async Task<UserModel> GetUser(int Id)
         {
            
@@ -41,6 +52,11 @@ namespace ShiftPicker.Data.Services
                 .FirstOrDefaultAsync(a => a.Id == Id);
             return user;
         }
+
+        /// <summary>
+        /// Getting the users with role = employee
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<UserModel>> GetAllEmployees()
         {
             List<UserModel> employees = await _userContext
@@ -54,7 +70,10 @@ namespace ShiftPicker.Data.Services
             return employees;
         }
 
-
+        /// <summary>
+        /// Getting the users with role = supervisor
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<UserModel>> GetAllSupervisors()
         {
             List<UserModel> supervisors = await _userContext
@@ -65,14 +84,20 @@ namespace ShiftPicker.Data.Services
                                           .FirstOrDefaultAsync();
             return supervisors;
         }
-
+        /// <summary>
+        /// deactivating  a user
+        /// </summary>
+        /// <param name="userModel"></param>
         public void DeactivateUser(UserModel userModel)
         {
             userModel.isActive = false;
              _userContext.UserModels.Update(userModel);
             _userContext.SaveChanges();
         }
-
+        /// <summary>
+        /// Activating  a user
+        /// </summary>
+        /// <param name="userModel"></param>
         public void ActivateUser(UserModel userModel)
         {
                 userModel.isActive = true;

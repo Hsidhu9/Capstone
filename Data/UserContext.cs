@@ -8,7 +8,7 @@ using ShiftPicker.Data.Models;
 namespace ShiftPicker.Data
 {
     /// <summary>
-    /// The Database Context For Shift_Picker Database
+    /// The Database Context For Shift_Picker Database, This class inherits from DbContext offered by Microsoft.EntityFrameworkCore
     /// </summary>
     public class UserContext : DbContext
     {
@@ -17,9 +17,22 @@ namespace ShiftPicker.Data
         {
         }
 
+        /// <summary>
+        /// Table of Users
+        /// </summary>
         public DbSet<UserModel> UserModels { get; set; }
+
+        /// <summary>
+        /// Table of Shift Details
+        /// </summary>
         public DbSet<ShiftDetailModel> ShiftDetailModels { get; set; }
+        /// <summary>
+        /// Table of Shifts
+        /// </summary>
         public DbSet<ShiftModel> ShiftModels { get; set; }
+        /// <summary>
+        /// Table of User Roles
+        /// </summary>
         public DbSet<UserRole> UserRoles { get; set; }
 
         /// <summary>
@@ -29,6 +42,9 @@ namespace ShiftPicker.Data
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            ///defining relation ships b/w different entities i.e one to many and many to one
+            /// Also defining the primary keys and foriegn keys on various tables
+           
             modelBuilder.Entity<UserModel>().ToTable("UserDetails").HasKey(s => s.Id);
             modelBuilder.Entity<UserModel>()
                         .HasOne(s => s.Role)
@@ -54,6 +70,10 @@ namespace ShiftPicker.Data
                         .HasForeignKey(s => s.ShiftId);
         }
 
+        /// <summary>
+        /// Function to manually dispose/destruct the Database context, if needed
+        /// </summary>
+        /// <returns></returns>
         public override ValueTask DisposeAsync()
         {
             return base.DisposeAsync();

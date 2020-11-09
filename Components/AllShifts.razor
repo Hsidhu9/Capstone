@@ -1,0 +1,66 @@
+﻿@page "/allshifts"
+@namespace Shift_Picker.Components
+@inherits AllShiftVM
+
+
+<div class="container" style="text-align:center">
+    <h3>AllShifts</h3>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Number
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Time
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var shift in AllShifts)
+        {
+            <tr>
+                <td>
+                  @AllShifts.IndexOf(shift)
+                </td>
+                <td>
+                    @shift.StartTime.Date.ToString("MM/dd/yyyy")
+                </td>
+                <td>
+                    @shift.StartTime.ToString("hh: mm tt") - @shift.EndTime.ToString("hh: mm tt")
+                </td>
+                <td>
+                    @if (shift.StartTime < DateTime.Now)
+                    {
+                        <button class="btn btn-primary">Completed</button>
+                    }
+                    else if (AllShiftDetails.Where(s => s.ShiftId.Equals(shift.Id)).Any() && AllShiftDetails.First(s => s.ShiftId.Equals(shift.Id)).IsCancelRequest == false)
+                    {
+                        <button class="btn btn-primary" style="width:auto" @onclick=" () => {
+                                                                       CancelShiftDetails(AllShiftDetails.Where(s => s.ShiftId.Equals(shift.Id)).First()); }">
+                            Request Cancel
+                        </button>
+                    }
+                    else if (AllShiftDetails.Where(s => s.ShiftId.Equals(shift.Id)).Any() && AllShiftDetails.First(s => s.ShiftId.Equals(shift.Id)).IsCancelRequest == true)
+                    {
+                <button class="btn btn-primary" style="width:auto">
+                    Cancel  Request  Pending
+                </button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+    </table>
+
+@code {
+
+}

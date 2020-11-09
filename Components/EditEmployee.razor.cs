@@ -19,6 +19,8 @@ namespace Shift_Picker.Components
         protected UserModel Employee { get; set; } = new UserModel();
 
         [Inject]
+        protected LoginModel LoggedInUser { get; set; }
+        [Inject]
         protected NavigationManager NavManager { get; set; }
 
         private IUserRoleService UserRoleService => ScopedServices.GetService<IUserRoleService>();

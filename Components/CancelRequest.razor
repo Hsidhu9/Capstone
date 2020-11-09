@@ -1,0 +1,58 @@
+﻿@page "/CancellationRequest"
+@inherits CancelRequestVM
+
+<div class="container" style="text-align:center">
+    <h3>Cancel Shift Requests</h3>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Time
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var CancellationRequest in AllCancellationRequests)
+        {
+            <tr>
+                <td>
+                    @CancellationRequest.UserName
+                </td>
+                <td>
+                    @CancellationRequest.ShiftDetails.Shift.StartTime.Date.ToString("MM/dd/yyyy")
+                </td>
+                <td>
+                    @CancellationRequest.ShiftDetails.Shift.StartTime.ToString("hh: mm tt") - @CancellationRequest.ShiftDetails.Shift.EndTime.ToString("hh: mm tt")
+                </td>
+                <td>
+                    <button class="btn btn-primary" 
+                            @onclick=" () => {
+                                           ApproveCancellation(CancellationRequest.ShiftDetails);
+                                       }">
+                        Approve
+                    </button>
+                    <button class="btn btn-primary" @onclick=" () => {
+                                           DisapproveCancellation(CancellationRequest.ShiftDetails);
+                                       }" >
+                        Disapprove
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+    @code {
+
+    }

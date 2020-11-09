@@ -167,6 +167,17 @@
             transition: all 0.2s;
             cursor: pointer;
         }
+        .selected-shift {
+            background: #F1948A;
+            color: white;
+            border-radius: 2px;
+            text-align: left;
+            font-size: 0.875rem;
+            z-index: 2;
+            padding: 0.5rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
 
             .event:hover {
                 box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
@@ -276,34 +287,43 @@
                         @foreach (var day in AllDaysOfWeek)
                         {
 
-                            @if (SelectedShiftsElementIds.ContainsKey(day.Date.ToString() + j))
+                            //If the date/time is in future in must be active, else inactive
+                            @if (day.AddHours(j) >= DateTime.Now)
                             {
-                                @if (day.AddHours(j) >= DateTime.Now)
+                                //If the date/time has a shift created for it, it must show in blue
+                                @if (SelectedShiftsElementIds.ContainsKey(day.Date.ToString() + j))
                                 {
-                                    <td class="event"
-                                        @onclick="() => SelectedShiftAsEmployee(SelectedShiftsElementIds[day.Date.ToString() + j].GetValueOrDefault())" />
+
+                                    @if (SelectedShiftsElementIds.ContainsKey(day.Date.ToString() + j)
+                                      && !HasEmployeeSelectedThisShift(SelectedShiftsElementIds[day.Date.ToString() + j].GetValueOrDefault())
+                                      && !IsEmployeesNeededComplete(SelectedShiftsElementIds[day.Date.ToString() + j].GetValueOrDefault()))
+                                    {
+                                        <td class="event"
+                                            @onclick="() =>{
+                                                          OpenConfirmShiftDialog(SelectedShiftsElementIds[day.Date.ToString() + j].GetValueOrDefault());
+                                                          }" />
+                                    }
+                                    else
+                                    {
+                                        <td class="selected-shift"/>
+                                    }
+
                                 }
                                 else
                                 {
-                                    //incase the number of employees needed is equal to number of
-                                    //shift details then event class needs to be removed
-                                    <td class="event inactive"></td>
+                                    <td class="headcol"
+                                        @onclick="() => SetStartDateTimeForShiftCreation(day, j.ToString())" />
                                 }
-
                             }
                             else
                             {
-                                @if (day.AddHours(j) >= DateTime.Now)
-                                {
-                                    <td class="headcol"
-                                        @onclick="() => SetStartTimeAndDate(day, j.ToString())" />
-                                }
-                                else
-                                {
-                                    <td class="inactive"></td>
-                                }
-
+                                //incase the number of employees needed is equal to number of
+                                //shift details then event class needs to be removed
+                                <td class=" inactive"></td>
                             }
+
+
+
                         }
 
                     </tr>
@@ -314,7 +334,7 @@
         </div>
     </div>
 </div>
-<div class="@modalClass" tabindex="-1" style="display: @displayMode;">
+<div class="@modalClass1" tabindex="-1" style="display: @displayMode1;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -329,13 +349,13 @@
                         <div class=" col-md-4">
                             <h6>Start Time: </h6><input type="time" id="startTime" name="Time1"
                                                         min="00:00" max="23:00"
-                                                        @bind="SelectedStartDateTime"
+                                                        @bind="CreatedStartDateTime"
                                                         required>
                         </div>
                         <div class="col-md-4">
                             <h6>End Time:</h6><input type="time" id="endTime" name="Time2"
                                                      min="00:00" max="23:00"
-                                                     @bind="SelectedEndDateTime"
+                                                     @bind="CreatedEndDateTime"
                                                      required>
                         </div>
                         <div class="col-md-4">
@@ -348,7 +368,38 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" @onclick="ToggleModal">Cancel</button>
-                    <button class="btn btn-primary" @onclick="AddShiftAsync">Apply</button>
+                    <button class="btn btn-primary" @onclick="CreateShiftAsync">Apply</button>
+                    @if (!string.IsNullOrEmpty(ErrorMessage))
+                    {
+                        <span>@ErrorMessage</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="@modalClass2" tabindex="-1" style="display: @displayMode2;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Accept Shift</h5>
+                <button class="close" @onclick="ToggleModal2" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div>
+                <div class="modal-body">
+                    <div class="row">
+                        Start Time:  @SelectedShiftStartTime
+                    </div>
+                    <div class="row">
+                        End Time: @SelectedShiftEndTime
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="ToggleModal2">Cancel</button>
+                    <button class="btn btn-primary" @onclick="ConfirmShift">Apply</button>
                     @if (!string.IsNullOrEmpty(ErrorMessage))
                     {
                         <span>@ErrorMessage</span>
@@ -360,10 +411,15 @@
 </div>
 
 
+
 @code {
-    bool open = false;
-    string modalClass => open ? "modal fade show" : "modal fade";
-    string displayMode => open ? "block" : "none";
+    bool openModal1 = false;
+    string modalClass1 => openModal1 ? "modal fade show" : "modal fade";
+    string displayMode1 => openModal1 ? "block" : "none";
+
+    bool openModal2 = false;
+    string modalClass2 => openModal2 ? "modal fade show" : "modal fade";
+    string displayMode2 => openModal2 ? "block" : "none";
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }
@@ -372,39 +428,150 @@
 
     private void ToggleModal()
     {
-        open = !open;
+        openModal1 = !openModal1;
         StateHasChanged();
     }
 
+    private void ToggleModal2()
+    {
+        openModal2 = !openModal2;
+        StateHasChanged();
+    }
 
+    private DateTime SelectedDay { get; set; }
 
-    private void SetStartTimeAndDate(DateTime dayOfWeek, string hourOfDay)
+    private int? SelectedShiftId { get; set; }
+
+    private string SelectedShiftStartTime { get; set; }
+    private string SelectedShiftEndTime { get; set; }
+
+    private bool IsEmployeeLoggedIn { get { return LoggedInUser.User.RoleId == 4; } }
+
+    /// <summary>
+    /// check if the number of employee needed for the shift has been fullfilled. 
+    /// </summary>
+    /// <param name="shiftId"></param>
+    /// <returns></returns>
+    private bool IsEmployeesNeededComplete(int shiftId)
+    {
+        if (IsEmployeeLoggedIn)
+        {
+            var shift = AllAvailableShifts.Where(s => s.Id == shiftId).FirstOrDefault();
+            //To Avoid null reference exception
+            if(shift != null)
+            {
+                if (shift.EmployeesNeeded == shift.ShiftDetails.Count())
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// check if the loggedIn employee has already selected this shift.
+    /// </summary>
+    /// <param name="selectedShiftId"></param>
+    /// <returns></returns>
+    private bool HasEmployeeSelectedThisShift(int selectedShiftId)
+    {
+        if (IsEmployeeLoggedIn)
+        {
+            var selectedShift = AllAvailableShifts.Where(s => s.Id == selectedShiftId).FirstOrDefault();
+
+            //To Avoid null reference exception
+            if(selectedShift != null)
+            {
+                var shiftDetailsForThisEmployee = selectedShift.ShiftDetails.Where(s => s.PickedByEmployee == LoggedInUser.User.Id).ToList();
+                if (shiftDetailsForThisEmployee.Count() > 0)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// Setting the start date time and end date time to open the dialog for creating shifts
+    /// </summary>
+    /// <param name="dayOfWeek"></param>
+    /// <param name="hourOfDay"></param>
+    private void SetStartDateTimeForShiftCreation(DateTime dayOfWeek, string hourOfDay)
     {
         if(LoggedInUser.User.RoleId != 4)
         {
             ToggleModal();
-            SelectedStartDateTime = dayOfWeek.AddHours(Convert.ToDouble(hourOfDay));
-            SelectedEndDateTime = SelectedStartDateTime.AddHours(2);
+            //Storing the date, so that if the start date time and end datetime could be assigned to selected day
+            SelectedDay = dayOfWeek.Date;
+            CreatedStartDateTime = dayOfWeek.AddHours(Convert.ToDouble(hourOfDay));
+            CreatedEndDateTime = CreatedStartDateTime.AddHours(2);
         }
+
 
     }
 
-    protected async Task AddShiftAsync()
+    /// <summary>
+    /// Open the dialog to confirm the shift as an employee
+    /// </summary>
+    /// <param name="shiftId"></param>
+    private void OpenConfirmShiftDialog(int shiftId)
+    {
+        if (IsEmployeeLoggedIn)
+        {
+            SelectedShiftId = shiftId;
+            //Pull the selected shift from the shifts on the calendar
+            SelectedShiftStartTime = AllAvailableShifts.Where(s => s.Id.Equals(shiftId)).FirstOrDefault().StartTime.ToString("MM/dd/yyyy h:mm tt");
+            SelectedShiftEndTime = AllAvailableShifts.Where(s => s.Id.Equals(shiftId)).FirstOrDefault().EndTime.ToString("MM/dd/yyyy h:mm tt");
+            ToggleModal2();
+        }
+    }
+
+    /// <summary>
+    /// After selecting OK adding the shift detail to db and closing the confirm shift dialog
+    /// </summary>
+    private void ConfirmShift()
     {
 
-        if (SelectedStartDateTime >= SelectedEndDateTime || NumberOfEmployeesNeeded <= 0)
+        SelectedShiftAsEmployee(SelectedShiftId.GetValueOrDefault());
+        ToggleModal2();
+    }
+
+    /// <summary>
+    /// Create Shift as a supervisor/Manager
+    /// </summary>
+    protected void CreateShiftAsync()
+    {
+        CreatedStartDateTime = new DateTime(SelectedDay.Year, SelectedDay.Month, SelectedDay.Day, CreatedStartDateTime.Hour, 0, 0);
+        CreatedEndDateTime = new DateTime(SelectedDay.Year, SelectedDay.Month, SelectedDay.Day, CreatedEndDateTime.Hour, 0, 0);
+
+        //Throeing an error if the created shift's start time is greater than end time or the number of employees needed is less than or equal to 0
+        if (CreatedStartDateTime >= CreatedEndDateTime || NumberOfEmployeesNeeded <= 0)
             ErrorMessage = "Selected Start Time is greater or equal to end time";
         else
         {
-            for (int i = SelectedStartDateTime.Hour; i <= SelectedEndDateTime.Hour; i++)
+            for (int i = CreatedStartDateTime.Hour; i <= CreatedEndDateTime.Hour; i++)
             {
-                SelectedShiftsElementIds.Add(SelectedStartDateTime.Date.ToString() + i, null);
+                SelectedShiftsElementIds.Add(CreatedStartDateTime.Date.ToString() + i, null);
             }
 
-            AddShifts(SelectedStartDateTime, SelectedEndDateTime, NumberOfEmployeesNeeded);
+            AddShifts(CreatedStartDateTime, CreatedEndDateTime, NumberOfEmployeesNeeded);
         }
         ToggleModal();
     }
-
-
 }

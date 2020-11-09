@@ -1,11 +1,10 @@
 ﻿@page  "/ShowAllSupervisors"
 @namespace Shift_Picker.Components
 @inherits Shift_Picker.Components.AllSupervisorsVM
-<h3>AllSupervisors</h3>
 
-<p>
-    <a>All Supervisors</a>
-</p>
+    <div class="container" style="text-align:center">
+        <h3> All Supervisors</h3>
+    </div>
 @if (AllUsers == null)
 {
     <div class="spinner-border text-primary"></div>
@@ -45,30 +44,41 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in AllUsers)
+            @foreach (var user in AllUsers)
             {
                 <tr>
                     <td>
-                        @item.FirstName
+                        @user.FirstName
                     </td>
                     <td>
-                        @item.LastName
+                        @user.LastName
                     </td>
                     <td>
-                        @item.UserName
+                        @user.UserName
                     </td>
                     <td>
-                        @item.Password
+                        @user.Password
                     </td>
                     <td>
-                        @item.Email
+                        @user.Email
                     </td>
                     <td>
-                        @item.Address, @item.City, @item.State, @item.Zip, @item.Country
+                        @user.Address, @user.City, @user.State, @user.Zip, @user.Country
                     </td>
                     <td>
-                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                        @if (user.Id != LoggedInUser.User.Id)
+                        {
+                            <a class="btn btn-primary" href="employee/edit/@user.Id">Edit</a>
+                            @if (user.isActive)
+                            {
+                                <button class="btn btn-primary" @onclick="() => DeactivateUser(user)">Deactivate</button>
+                            }
+                            else 
+                            {
+                                <button class="btn btn-primary" @onclick="() => ActivateUser(user)">Activate</button>
+                            }
+                        }
+
                     </td>
                 </tr>
             }

@@ -22,7 +22,6 @@ namespace ShiftPicker.Data.Services
         }
         public void AddUser(UserModel user)
         {
-            //
             _userContext.UserModels.Add(user);
             _userContext.SaveChanges();
         }
@@ -42,12 +41,6 @@ namespace ShiftPicker.Data.Services
                 .FirstOrDefaultAsync(a => a.Id == Id);
             return user;
         }
-
-        public void DeleteUser(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<List<UserModel>> GetAllEmployees()
         {
             List<UserModel> employees = await _userContext
@@ -72,5 +65,20 @@ namespace ShiftPicker.Data.Services
                                           .FirstOrDefaultAsync();
             return supervisors;
         }
+
+        public void DeactivateUser(UserModel userModel)
+        {
+            userModel.isActive = false;
+             _userContext.UserModels.Update(userModel);
+            _userContext.SaveChanges();
+        }
+
+        public void ActivateUser(UserModel userModel)
+        {
+                userModel.isActive = true;
+            _userContext.UserModels.Update(userModel);
+            _userContext.SaveChanges();
+        }
+
     }
 }

@@ -12,5 +12,7 @@ namespace ShiftPicker.Data.Models
         public int ShiftId { get; set; }
         public ShiftModel Shift { get; set; }
         public int PickedByEmployee { get; set; }
+
+        public bool IsCancelRequest { get; set; }
     }
 }

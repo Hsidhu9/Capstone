@@ -2,79 +2,86 @@
 @namespace Shift_Picker.Components
 @inherits Shift_Picker.Components.AllEmployeesVM
 
-<h1>All Users</h1>
 
-<p>
-    <a> All Employees</a>
-</p>
-@if (AllUsers == null)
-{
-    <div class="spinner-border text-primary"></div>
-}
 
-@if (AllUsers.Count == 0)
-{
-    <p> There are No Employee right now</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    FirstName
-                </th>
-                <th>
-                    LastName
-                </th>
-                <th>
-                    Username
-                </th>
-                <th>
-                    Password
-                </th>
-                <th>
-                    Email
-                </th>
-                <th>
-                    Address
-                </th>
-                
-                <th>
-                    Action
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in AllUsers)
-            {
+<div class="container"style="text-align:center">
+    <h3> All Employees</h3>
+    </div>
+
+    @if (AllUsers == null)
+    {
+        <div class="spinner-border text-primary"></div>
+    }
+
+    @if (AllUsers.Count == 0)
+    {
+        <p> There are No Employee right now</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>
-                        @item.FirstName
-                    </td>
-                    <td>
-                        @item.LastName
-                    </td>
-                    <td>
-                        @item.UserName
-                    </td>
-                    <td>
-                        @item.Password
-                    </td>
-                    <td>
-                        @item.Email
-                    </td>
-                    <td>
-                        @item.Address, @item.City, @item.State, @item.Zip, @item.Country
-                    </td>
-                    <td>
-                        <a href="employee/edit/@item.Id">Edit</a> |
-                        
-                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
+                    <th>
+                        FirstName
+                    </th>
+                    <th>
+                        LastName
+                    </th>
+                    <th>
+                        Username
+                    </th>
+                    <th>
+                        Password
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Address
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
+            </thead>
+            <tbody>
+                @foreach (var item in AllUsers)
+                {
+                    <tr>
+                        <td>
+                            @item.FirstName
+                        </td>
+                        <td>
+                            @item.LastName
+                        </td>
+                        <td>
+                            @item.UserName
+                        </td>
+                        <td>
+                            @item.Password
+                        </td>
+                        <td>
+                            @item.Email
+                        </td>
+                        <td>
+                            @item.Address, @item.City, @item.State, @item.Zip, @item.Country
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" href="employee/edit/@item.Id">Edit</a>
+                            @if (item.isActive)
+                            {
+                                <button class="btn btn-primary" @onclick="() => DeactivateUser(item)">Deactivate</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary" @onclick="() => ActivateUser(item)">Activate</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 

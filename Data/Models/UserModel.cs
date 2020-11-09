@@ -34,6 +34,7 @@ namespace ShiftPicker.Data.Models
         [Required]
         public string Country { get; set; }
         public UserRole Role { get; set; }
+        public bool isActive { get; set; }
 
     }
 }

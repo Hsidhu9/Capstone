@@ -49,19 +49,6 @@ namespace ShiftPicker.Data.Controller
 
 
         // POST: ShiftDetail/Delete/5
-        [HttpDelete]
-        [ValidateAntiForgeryToken]
-        public void Delete(int id)
-        {
-            try
-            {
-                _ShiftDetailService.DeleteShiftDetail(id);
-
-            }
-            catch
-            {
-                throw;
-            }
-        }
+       
     }
 }

@@ -9,8 +9,9 @@ namespace ShiftPicker.Data.Services
     /// </summary>
     public interface IUserService
     {
+        void ActivateUser(UserModel userModel);
         void AddUser(UserModel user);
-        void DeleteUser(int id);
+        void DeactivateUser(UserModel userModel);
         Task<List<UserModel>> GetAllEmployees();
 
         Task<List<UserModel>> GetAllSupervisors();

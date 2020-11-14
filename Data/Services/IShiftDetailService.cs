@@ -13,6 +13,7 @@ namespace ShiftPicker.Data.Services
         void CancelShiftDetail(ShiftDetailModel shiftDetail);
         void DeleteShiftDetail(ShiftDetailModel shiftDetail);
         void DisapproveCancelShiftDetail(ShiftDetailModel shiftDetail);
+        List<ShiftModel> GetAllShifts();
         List<ShiftDetailModel> GetAllShiftsForEmployee(int employeeId);
         List<CancelRequestModel> GetCancelshiftRequests();
         ShiftDetailModel GetShiftDetail(int Id);

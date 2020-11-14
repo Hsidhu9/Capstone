@@ -124,5 +124,16 @@ namespace ShiftPicker.Data.Services
             shiftDetail.IsCancelRequest = false;
             _userContext.SaveChanges();
         }
+
+        /// <summary>
+        /// Getting all the shifts and shift details from DB.
+        /// </summary>
+        /// <returns></returns>
+        public List <ShiftModel>  GetAllShifts()
+        {
+            List<ShiftModel> shifts = new List<ShiftModel>();
+            shifts = _userContext.ShiftModels.Include(s => s.ShiftDetails).ToList();
+            return shifts; 
+        }
     }
 }

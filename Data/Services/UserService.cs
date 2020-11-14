@@ -53,6 +53,14 @@ namespace ShiftPicker.Data.Services
             return user;
         }
 
+        public async Task<UserModel> GetUserById(int Id)
+        {
+            UserModel user = await _userContext
+                                .UserModels
+                                .Where(s => s.Id == Id).FirstOrDefaultAsync();
+            return user;
+        }
+
         /// <summary>
         /// Getting the users with role = employee
         /// </summary>

@@ -1,0 +1,57 @@
+﻿@page "/ShiftReports"
+@namespace Shift_Picker.Components
+@inherits ShiftReportsVM
+
+
+<div class="container" style="text-align:center">
+    <h3> All Employees</h3>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                FirstName
+            </th>
+            <th>
+                LastName
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Time
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var shiftReport in AllShiftReports)
+        {
+            <tr>
+                <td>
+                    @shiftReport.UserName
+                </td>
+                <td>
+                    @shiftReport.FirstName
+                </td>
+                <td>
+                    @shiftReport.LastName
+                </td>
+                <td>
+                    @shiftReport.Date.ToString("MM/dd/yyyy")
+                </td>
+                <td>
+                    @shiftReport.StartTime.ToString("hh: mm tt") - @shiftReport.EndTime.ToString("hh: mm tt")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+
+}

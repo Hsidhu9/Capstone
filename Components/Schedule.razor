@@ -555,7 +555,7 @@
     /// <summary>
     /// Create Shift as a supervisor/Manager
     /// </summary>
-    protected void CreateShiftAsync()
+    protected async Task CreateShiftAsync()
     {
         CreatedStartDateTime = new DateTime(SelectedDay.Year, SelectedDay.Month, SelectedDay.Day, CreatedStartDateTime.Hour, 0, 0);
         CreatedEndDateTime = new DateTime(SelectedDay.Year, SelectedDay.Month, SelectedDay.Day, CreatedEndDateTime.Hour, 0, 0);
@@ -565,12 +565,12 @@
             ErrorMessage = "Selected Start Time is greater or equal to end time";
         else
         {
-            for (int i = CreatedStartDateTime.Hour; i <= CreatedEndDateTime.Hour; i++)
+            for (int i = CreatedStartDateTime.Hour; i < CreatedEndDateTime.Hour; i++)
             {
                 SelectedShiftsElementIds.Add(CreatedStartDateTime.Date.ToString() + i, null);
             }
 
-            AddShifts(CreatedStartDateTime, CreatedEndDateTime, NumberOfEmployeesNeeded);
+            await AddShifts(CreatedStartDateTime, CreatedEndDateTime, NumberOfEmployeesNeeded);
         }
         ToggleModal();
     }

@@ -22,7 +22,7 @@ namespace Shift_Picker.Components
         /// <summary>
         /// Getting the logged in User from the Dependency Inhjection container, which was injected as singleton
         /// </summary>
-        [Inject]
+        
         protected LoginModel LoggedInUser { get; set; }
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace ShiftPicker.Data.Services
     /// </summary>
     public interface ILoginService
     {
-        bool Authenticate();
+       LoginModel Authenticate(string userName, string password);
 
     }
 }

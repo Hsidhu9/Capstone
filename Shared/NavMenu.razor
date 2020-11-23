@@ -27,7 +27,7 @@
                 <span class="oi oi-person" aria-hidden="true"></span> Profile
             </NavLink>
         </li>
-        @if (LoggedInUser.User != null && LoggedInUser.User.RoleId != 4)
+        @*@if (LoggedInUser.User != null && LoggedInUser.User.RoleId != 4)
         {
         <li class="nav-item px-3">
             <NavLink class="dropdown-toggle nav-link" @onclick="() => expandSubNav = !expandSubNav" href="#">
@@ -65,7 +65,7 @@
 
             }
         </li>
-        }
+        }*@
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="#" @onclick="LogOut">
                 <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
@@ -89,14 +89,9 @@
     [Inject]
     protected NavigationManager NavigationManager { get; set; }
 
-    [Inject]
-    protected ShiftPicker.Data.Models.LoginModel LoggedInUser{ get; set; }
-
     protected void LogOut()
     {
-        LoggedInUser.User = null;
-        LoggedInUser.IsAuthenticated = false;
-        NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
+        
         return;
     }
 

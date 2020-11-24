@@ -38,6 +38,9 @@ namespace Shift_Picker.Components
         /// </summary>
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        protected ISessionStorageService SessionStorageService { get; set; }
         /// <summary>
         /// This method is called when the page is loaded
         /// </summary>
@@ -53,6 +56,8 @@ namespace Shift_Picker.Components
         {
             ((ShiftPickerCustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(User.UserName, User.Password);
             NavigationManager.NavigateTo("/");
+
+            SessionStorageService.SetItemAsync("userName", User.UserName);
         }
     }
 

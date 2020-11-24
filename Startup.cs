@@ -42,6 +42,7 @@ namespace Shift_Picker
                               sqlOptions.EnableRetryOnFailure();
                           });
             });
+            services.AddBlazoredSessionStorage();
             services.AddScoped<AuthenticationStateProvider, ShiftPickerCustomAuthenticationStateProvider>();
         }
 

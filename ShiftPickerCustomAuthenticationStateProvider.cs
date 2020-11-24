@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿using Blazored.SessionStorage;
+using Microsoft.AspNetCore.Components.Authorization;
+using ShiftPicker.Data.Models;
 using ShiftPicker.Data.Services;
 using System;
 using System.Collections.Generic;
@@ -11,16 +13,41 @@ namespace Shift_Picker
     public class ShiftPickerCustomAuthenticationStateProvider : AuthenticationStateProvider
     {
         private readonly ILoginService _loginService;
+        private readonly IUserService _userService;
+        private readonly ISessionStorageService _sessionStorageService;
 
-        public ShiftPickerCustomAuthenticationStateProvider(ILoginService loginService)
+        public ShiftPickerCustomAuthenticationStateProvider(ILoginService loginService,
+            IUserService userService,
+            ISessionStorageService sessionStorageService)
         {
             _loginService = loginService;
+            _userService = userService;
+            _sessionStorageService = sessionStorageService;
         }
-        public override Task<AuthenticationState> GetAuthenticationStateAsync()
+        public async override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var identity = new ClaimsIdentity();
+            var loggedinUserName = await _sessionStorageService.GetItemAsync<string>("userName");
+            UserModel loggedinUser = null;
+            if (!string.IsNullOrEmpty(loggedinUserName))
+            {
+                loggedinUser= await _userService.GetUserByUsername(loggedinUserName);
+            }
+            ClaimsIdentity identity;
+            if(loggedinUser != null)
+            {
+                identity = new ClaimsIdentity(new[] {
+                    new Claim(ClaimTypes.Name, loggedinUser.UserName),
+                    new Claim(ClaimTypes.GivenName, loggedinUser.FirstName),
+                    new Claim(ClaimTypes.Surname, loggedinUser.LastName),
+                    new Claim("RoleId", loggedinUser.RoleId.ToString())
+                }, "apiauth_type");
+            }
+            else
+            {
+                 identity = new ClaimsIdentity();
+            }
             var user = new ClaimsPrincipal(identity);
-            return Task.FromResult(new AuthenticationState(user));
+            return await Task.FromResult(new AuthenticationState(user));
         }
 
         public void MarkUserAsAuthenticated(string userName, string password)

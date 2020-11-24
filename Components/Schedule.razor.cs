@@ -64,10 +64,10 @@ namespace Shift_Picker.Components
         protected List<ShiftModel> AllAvailableShifts{get;set;}
 
         /// <summary>
-        /// Getting the logged in User from the Dependency Inhjection container, which was injected as singleton
+        /// Getting the logged in User from the Session storage
         /// </summary>
-        [Inject]
-        protected LoginModel LoggedInUser { get; set; }
+       
+        protected UserModel LoggedInUser { get; set; }
 
         /// <summary>
         /// Creating a Dictionary to appropriatly display time slots on the Week Grid, the key is the Date and time and the value is the shift id

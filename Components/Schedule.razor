@@ -3,6 +3,8 @@
 @inherits Shift_Picker.Components.ScheduleVM
 @inject IJSRuntime IJSRunTime;
 
+<AuthorizeView>
+    <Authorized>
 <head>
     <style>
         * {
@@ -409,7 +411,8 @@
         </div>
     </div>
 </div>
-
+    </Authorized>
+</AuthorizeView>
 
 
 @code {

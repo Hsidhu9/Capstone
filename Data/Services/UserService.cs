@@ -113,5 +113,10 @@ namespace ShiftPicker.Data.Services
             _userContext.SaveChanges();
         }
 
+        public async Task<UserModel> GetUserByUsername(string username)
+        {
+            return await _userContext.UserModels.Include(s => s.Role)
+                                .Where(s => s.UserName.Equals(username)).FirstOrDefaultAsync();
+        }
     }
 }

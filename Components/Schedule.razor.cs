@@ -1,5 +1,4 @@
-﻿using Blazored.SessionStorage;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -126,7 +125,7 @@ namespace Shift_Picker.Components
         public bool IsConnected =>
         hubConnection.State == HubConnectionState.Connected;
 
-        Task SendMessage() => hubConnection.SendAsync("SendMessage");
+        async Task SendMessage() => await hubConnection.SendAsync("SendMessage");
         public void Dispose()
         {
             _ = hubConnection.DisposeAsync();
@@ -233,6 +232,7 @@ namespace Shift_Picker.Components
         /// <param name="numberOfEmployeedNeeded"></param>
         protected async Task AddShifts(DateTime startDateTime, DateTime endDateTime , int numberOfEmployeedNeeded)
         {
+           
             ShiftModel shiftModel = new ShiftModel()
             {
                 StartTime = startDateTime,
@@ -240,9 +240,10 @@ namespace Shift_Picker.Components
                 EmployeesNeeded = numberOfEmployeedNeeded,
                 CreatedBy = LoggedInUser.Id
             };
-
             ShiftService.AddShift(shiftModel);
+
             if (IsConnected) await SendMessage();
+
         }
 
         /// <summary>
@@ -260,7 +261,7 @@ namespace Shift_Picker.Components
                 };
 
                 ShiftDetailService.AddShiftDetail(shiftDetail);
-                if (IsConnected) await SendMessage();
+                //if (IsConnected) await SendMessage();
             }
 
         }

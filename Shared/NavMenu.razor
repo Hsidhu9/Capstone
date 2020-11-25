@@ -105,10 +105,18 @@
     [Inject]
     protected NavigationManager NavigationManager { get; set; }
 
-    protected void LogOut()
+    [Inject]
+    protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
+    [Inject]
+    protected ISessionStorageService SessionStorageService { get; set; }
+
+    protected async Task LogOut()
     {
-        
-        return;
+        ((ShiftPickerCustomAuthenticationStateProvider)AuthenticationStateProvider).Logout();
+        NavigationManager.NavigateTo("/");
+        await SessionStorageService.RemoveItemAsync("username");
+
     }
 
 }

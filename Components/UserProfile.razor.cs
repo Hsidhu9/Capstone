@@ -22,18 +22,39 @@ namespace Shift_Picker.Components
         /// </summary>
         protected IUserService UserService => ScopedServices.GetService<IUserService>();
 
+        [Inject]
+        protected NavigationManager NavigationManager { get; set; }
+
         [CascadingParameter]
         protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
+        [Inject]
+        protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
+
         protected UserModel LoggedInUser { get; set; }
 
-        protected override void OnInitialized()
+        protected async override Task OnInitializedAsync()
         {
-            var authState = AuthenticationStateTask.GetAwaiter().GetResult();
+            var authState = await AuthenticationStateTask;
+            UpdateLoginUser(authState);
+        }
+
+        /// <summary>
+        /// Method to update the Logged in User's profile
+        /// </summary>
+        protected void UpdateEmployee()
+        {
+            UserService.UpdateUser(LoggedInUser);
+            ((ShiftPickerCustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserChanged(LoggedInUser);
+            NavigationManager.NavigateTo("/");
+        }
+
+        protected void UpdateLoginUser(AuthenticationState authState)
+        {
             LoggedInUser = new UserModel();
-            foreach(var claim in authState.User.Claims)
+            foreach (var claim in authState.User.Claims)
             {
-                if (claim.Type == ClaimTypes.GivenName)
+                if(claim.Type == ClaimTypes.GivenName)
                     LoggedInUser.FirstName = claim.Value;
                 if (claim.Type == ClaimTypes.Surname)
                     LoggedInUser.LastName = claim.Value;
@@ -43,13 +64,13 @@ namespace Shift_Picker.Components
                     LoggedInUser.City = claim.Value;
                 if (claim.Type == ClaimTypes.StateOrProvince)
                     LoggedInUser.State = claim.Value;
-                if(claim.Type == ClaimTypes.PostalCode)
+                if (claim.Type == ClaimTypes.PostalCode)
                     LoggedInUser.Zip = claim.Value;
                 if (claim.Type == ClaimTypes.Country)
                     LoggedInUser.Country = claim.Value;
                 if (claim.Type == ClaimTypes.Name)
                     LoggedInUser.UserName = claim.Value;
-                if(claim.Type == ClaimTypes.Email)
+                if (claim.Type == ClaimTypes.Email)
                     LoggedInUser.Email = claim.Value;
                 if (claim.Type == "RoleName")
                 {
@@ -76,21 +97,15 @@ namespace Shift_Picker.Components
                         {
                             Id = int.Parse(claim.Value)
                         };
-                    }   
+                    }
                 }
                 if (claim.Type == "UserId")
                     LoggedInUser.Id = int.Parse(claim.Value);
-                if(claim.Type == "Password")
+                if (claim.Type == "Password")
                     LoggedInUser.Password = claim.Value;
+                LoggedInUser.isActive = true;
             }
         }
 
-        /// <summary>
-        /// Method to update the Logged in User's profile
-        /// </summary>
-        protected void UpdateEmployee()
-        {
-            UserService.UpdateUser(LoggedInUser);
-        }
     }
 }

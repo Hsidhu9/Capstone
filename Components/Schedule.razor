@@ -3,6 +3,8 @@
 @inherits Shift_Picker.Components.ScheduleVM
 @inject IJSRuntime IJSRunTime;
 
+<AuthorizeView>
+    <Authorized>
 <head>
     <style>
         * {
@@ -409,7 +411,11 @@
         </div>
     </div>
 </div>
-
+    </Authorized>
+    <NotAuthorized>
+        <Login/>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 @code {
@@ -444,8 +450,8 @@
 
     private string SelectedShiftStartTime { get; set; }
     private string SelectedShiftEndTime { get; set; }
-
-    private bool IsEmployeeLoggedIn { get { return LoggedInUser.User.RoleId == 4; } }
+    
+    private bool IsEmployeeLoggedIn { get { return LoggedInUser?.RoleId == 4; } }
 
     /// <summary>
     /// check if the number of employee needed for the shift has been fullfilled. 
@@ -490,7 +496,7 @@
             //To Avoid null reference exception
             if(selectedShift != null)
             {
-                var shiftDetailsForThisEmployee = selectedShift.ShiftDetails.Where(s => s.PickedByEmployee == LoggedInUser.User.Id).ToList();
+                var shiftDetailsForThisEmployee = selectedShift.ShiftDetails.Where(s => s.PickedByEmployee == LoggedInUser.Id).ToList();
                 if (shiftDetailsForThisEmployee.Count() > 0)
                     return true;
                 else
@@ -514,7 +520,7 @@
     /// <param name="hourOfDay"></param>
     private void SetStartDateTimeForShiftCreation(DateTime dayOfWeek, string hourOfDay)
     {
-        if(LoggedInUser.User.RoleId != 4)
+        if(LoggedInUser.RoleId != 4)
         {
             ToggleModal();
             //Storing the date, so that if the start date time and end datetime could be assigned to selected day

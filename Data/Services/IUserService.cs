@@ -13,10 +13,11 @@ namespace ShiftPicker.Data.Services
         void AddUser(UserModel user);
         void DeactivateUser(UserModel userModel);
         Task<List<UserModel>> GetAllEmployees();
-
+        Task<UserModel> GetUserByUsername(string username);
         Task<List<UserModel>> GetAllSupervisors();
         Task<UserModel> GetUser(int Id);
-        Task<UserModel> GetUserById(int Id);
+        Task<UserModel> GetUserByIdAsync(int Id);
         void UpdateUser(UserModel user);
+        UserModel GetUserById(int Id);
     }
 }

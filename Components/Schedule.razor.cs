@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.SessionStorage;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.CodeAnalysis.CSharp;
@@ -65,10 +67,10 @@ namespace Shift_Picker.Components
         protected List<ShiftModel> AllAvailableShifts{get;set;}
 
         /// <summary>
-        /// Getting the logged in User from the Dependency Inhjection container, which was injected as singleton
+        /// Getting the logged in User from the Session storage
         /// </summary>
-        [Inject]
-        protected LoginModel LoggedInUser { get; set; }
+       
+        protected UserModel LoggedInUser { get; set; }
 
         /// <summary>
         /// Creating a Dictionary to appropriatly display time slots on the Week Grid, the key is the Date and time and the value is the shift id
@@ -81,6 +83,10 @@ namespace Shift_Picker.Components
         private IShiftService ShiftService => ScopedServices.GetService<IShiftService>();
 
         /// <summary>
+        /// Getting the UserService from dependency Injection Container, which was injected as scoped
+        /// </summary>
+        private IUserService UserService => ScopedServices.GetService<IUserService>();
+        /// <summary>
         /// Getting the ShiftDetailService from dependency Injection Container, which was injected as scoped
         /// </summary>
         private IShiftDetailService ShiftDetailService => ScopedServices.GetService<IShiftDetailService>();
@@ -90,6 +96,8 @@ namespace Shift_Picker.Components
 
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
+        [CascadingParameter]
+        protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
         /// <summary>
         /// This method is called when the page is loaded
         /// </summary>
@@ -109,6 +117,10 @@ namespace Shift_Picker.Components
 
             SetGrid();
             SetAllHours();
+            PopulateShifts();
+            var authState = await AuthenticationStateTask;
+            if (int.TryParse(authState.User.Claims.Where(s => s.Type == "UserId").Select(s => s.Value).FirstOrDefault(), out int userId))
+                LoggedInUser = await UserService.GetUser(userId);
         }
 
         public bool IsConnected =>
@@ -226,7 +238,7 @@ namespace Shift_Picker.Components
                 StartTime = startDateTime,
                 EndTime = endDateTime,
                 EmployeesNeeded = numberOfEmployeedNeeded,
-                CreatedBy = LoggedInUser.User.Id
+                CreatedBy = LoggedInUser.Id
             };
 
             ShiftService.AddShift(shiftModel);
@@ -239,11 +251,11 @@ namespace Shift_Picker.Components
         /// <param name="shiftId"></param>
         protected async Task SelectedShiftAsEmployee(int shiftId)
         {
-            if(LoggedInUser.User.RoleId == 4)
+            if(LoggedInUser.RoleId == 4)
             {
                 ShiftDetailModel shiftDetail = new ShiftDetailModel
                 {
-                    PickedByEmployee = LoggedInUser.User.Id,
+                    PickedByEmployee = LoggedInUser.Id,
                     ShiftId = shiftId
                 };
 

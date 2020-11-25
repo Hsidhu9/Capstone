@@ -1,34 +1,18 @@
 ﻿@inherits LayoutComponentBase
+<AuthorizeView>
+    <Authorized>
+        <head>
+            <base href="~/" />
+        </head>
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+        <div class="container-fluid">
+            @Body
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <Shift_Picker.Components.Login />
+    </NotAuthorized>
+</AuthorizeView>
 
-
-@if (IsAuthenticated)
-{
-    <head>
-
-        <base href="~/" />
-
-    </head>
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-    <div class="container-fluid">
-        @Body
-    </div>
-}
-else
-{
-    <Shift_Picker.Components.Login />
-}
-
-@code{
-    bool IsAuthenticated = false;
-
-    [Inject]
-    public ShiftPicker.Data.Models.LoginModel UserLoggedIn { get; set; }
-
-    protected override void OnInitialized()
-    {
-        //If not present show the log in screen
-        IsAuthenticated = UserLoggedIn.IsAuthenticated;
-    }
-}

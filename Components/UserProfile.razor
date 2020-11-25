@@ -1,55 +1,62 @@
 ﻿@page "/Profile"
 @namespace Shift_Picker.Components
 @inherits Shift_Picker.Components.UserProfileViewModel
-<div class="row">
-    <div class="col" />
-    <div class="col-5 card alert alert-secondary mt-4">
-        <h3>Edit User</h3>
-        <div>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label class="control-label">First Name</label>
-                <input class="form-control" type="text" @bind="LoggedInUser.User.FirstName" />
-                <span asp-validation-for="UserModel.FirstName" class="text-danger"></span>
+
+<AuthorizeView>
+    <Authorized>
+            <div class="row">
+                <div class="col" />
+                <div class="col-5 card alert alert-secondary mt-4">
+                    <h3>Edit User</h3>
+                    <div>
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label class="control-label">First Name</label>
+                            <input class="form-control" type="text" @bind="LoggedInUser.FirstName" />
+                            <span asp-validation-for="UserModel.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Last Name</label>
+                            <input class="form-control" type="text" name="UserModel.LastName" @bind="LoggedInUser.LastName" />
+                            <span asp-validation-for="UserModel.LastName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Username</label>
+                            <input class="form-control" type="text" name="UserModel.UserName" readonly @bind="LoggedInUser.UserName" />
+                            <span asp-validation-for="UserModel.UserName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Password</label>
+                            <input class="form-control" type="password" name="UserModel.Password" @bind="LoggedInUser.Password" />
+                            <span asp-validation-for="UserModel.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Email</label>
+                            <input class="form-control" type="email" name="UserModel.Email" @bind="LoggedInUser.Email" />
+                            <span asp-validation-for="UserModel.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Address</label>
+                            <input class="form-control" type="text" placeholder="Address" @bind="LoggedInUser.Address" /><br />
+                            <input class="form-control" type="text" placeholder="City" @bind="LoggedInUser.City" /><br />
+                            <input class="form-control" type="text" placeholder="State" @bind="LoggedInUser.State" /><br />
+                            <input class="form-control" type="text" placeholder="Zip" @bind="LoggedInUser.Zip" /><br />
+                            <label class="control-label">Country</label><br />
+                            <input class="form-control" type="text" name="UserModel.Country" @bind="LoggedInUser.Country" />
+                            <label class="control-label">Role</label><br />
+                            <input class="form-control" type="text" name="UserModel.role" readonly @bind="LoggedInUser.Role.RoleName" />
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Update" class="btn btn-primary" @onclick="UpdateEmployee" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col" />
             </div>
-            <div class="form-group">
-                <label class="control-label">Last Name</label>
-                <input class="form-control" type="text" name="UserModel.LastName" @bind="LoggedInUser.User.LastName" />
-                <span asp-validation-for="UserModel.LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Username</label>
-                <input class="form-control" type="text" name="UserModel.UserName" readonly @bind="LoggedInUser.User.UserName" />
-                <span asp-validation-for="UserModel.UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Password</label>
-                <input class="form-control" type="password" name="UserModel.Password" @bind="LoggedInUser.User.Password" />
-                <span asp-validation-for="UserModel.Password" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Email</label>
-                <input class="form-control" type="email" name="UserModel.Email" @bind="LoggedInUser.User.Email" />
-                <span asp-validation-for="UserModel.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Address</label>
-                <input class="form-control" type="text" placeholder="Address" @bind="LoggedInUser.User.Address" /><br />
-                <input class="form-control" type="text" placeholder="City" @bind="LoggedInUser.User.City" /><br />
-                <input class="form-control" type="text" placeholder="State" @bind="LoggedInUser.User.State" /><br />
-                <input class="form-control" type="text" placeholder="Zip" @bind="LoggedInUser.User.Zip" /><br />
-                <label class="control-label">Country</label><br />
-                <input class="form-control" type="text" name="UserModel.Country" @bind="LoggedInUser.User.Country" />
-                <label class="control-label">Role</label><br />
-                <input class="form-control" type="text" name="UserModel.role" readonly @bind="LoggedInUser.User.Role.RoleName" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Update" class="btn btn-primary" @onclick="UpdateEmployee" />
-            </div>
-        </div>
-    </div>
-    <div class="col" />
-</div>
-}
+    </Authorized>
+    <NotAuthorized>
+        <Login />
+    </NotAuthorized>
+</AuthorizeView>
 
 

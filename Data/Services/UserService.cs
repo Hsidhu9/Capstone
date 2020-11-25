@@ -45,7 +45,6 @@ namespace ShiftPicker.Data.Services
         /// <returns></returns>
         public async Task<UserModel> GetUser(int Id)
         {
-           
             var user =  await _userContext
                                 .UserModels
                                 .Include(s => s.Role)
@@ -53,11 +52,19 @@ namespace ShiftPicker.Data.Services
             return user;
         }
 
-        public async Task<UserModel> GetUserById(int Id)
+        public async Task<UserModel> GetUserByIdAsync(int Id)
         {
             UserModel user = await _userContext
                                 .UserModels
                                 .Where(s => s.Id == Id).FirstOrDefaultAsync();
+            return user;
+        }
+
+        public UserModel GetUserById(int Id)
+        {
+            UserModel user = _userContext
+                                .UserModels
+                                .Where(s => s.Id == Id).FirstOrDefault();
             return user;
         }
 
@@ -113,5 +120,10 @@ namespace ShiftPicker.Data.Services
             _userContext.SaveChanges();
         }
 
+        public async Task<UserModel> GetUserByUsername(string username)
+        {
+            return await _userContext.UserModels.Include(s => s.Role)
+                                .Where(s => s.UserName.Equals(username)).FirstOrDefaultAsync();
+        }
     }
 }

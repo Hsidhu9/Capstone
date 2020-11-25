@@ -11,37 +11,32 @@ namespace ShiftPicker.Data
     public class LoginService : ILoginService
     {
         private readonly UserContext _userContext;
-        private readonly LoginModel _loginModel;
-
         /// <summary>
         /// The UserContext (Database context) is passed to the constrcutor from Dependency injection container, 
         /// also known as IServiceCollection, We had added the DbContext in Startup.cs as services.AddDbContext()
-        /// 
-        /// The LoginModel was added as a singleton to the service container
         /// </summary>
         /// <param name="userContext"></param>
-        /// <param name="loginModel"></param>
-        public LoginService(UserContext userContext, LoginModel loginModel)
+        public LoginService(UserContext userContext)
         {
             _userContext = userContext;
-            _loginModel = loginModel;
         }
 
 
-        public bool Authenticate()
+        public LoginModel Authenticate(string userName, string password)
         {
-           UserModel user =  _userContext.UserModels.Include(s => s.Role)
-                                .Where(s => s.UserName.Equals(_loginModel.User.UserName) && 
-           s.Password.Equals(_loginModel.User.Password)).FirstOrDefault();
+            UserModel user =  _userContext.UserModels.Include(s => s.Role)
+                                .Where(s => s.UserName.ToUpper().Equals(userName.ToUpper()) && 
+           s.Password.Equals(password)).FirstOrDefault();
              
-            if(user == null || !user.isActive) 
-                return false;
-            else
+            if(user != null && user.isActive) 
             {
-                _loginModel.IsAuthenticated = true;
-                _loginModel.User = user;
-                return true;
+                LoginModel loginModel = new LoginModel();
+
+                loginModel.IsAuthenticated = true;
+                loginModel.User = user;
+                return loginModel;
             }
+            return null;
         }
     }
 }

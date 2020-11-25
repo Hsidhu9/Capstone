@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +42,8 @@ namespace Shift_Picker
                               sqlOptions.EnableRetryOnFailure();
                           });
             });
-            services.AddSingleton<LoginModel>();
+            services.AddBlazoredSessionStorage();
+            services.AddScoped<AuthenticationStateProvider, ShiftPickerCustomAuthenticationStateProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +64,8 @@ namespace Shift_Picker
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -27,7 +27,7 @@ namespace Shift_Picker.Components
         /// <summary>
         /// Getting the logged in User from the Dependency Inhjection container, which was injected as singleton
         /// </summary>
-        [Inject]
+       
         protected LoginModel LoggedInUser { get; set; }
         /// <summary>
         /// The Navigation Manager that is given by the Framework to navigat from one page to another

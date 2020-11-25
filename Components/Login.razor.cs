@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Blazored.SessionStorage;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Shift_Picker.Components
 {
@@ -15,6 +16,8 @@ namespace Shift_Picker.Components
     /// </summary>
     public class LoginVM : OwningComponentBase
     {
+        [Inject]
+        protected AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         /// <summary>
         /// Getting the LoginService from dependency Injection Container, which was injected as scoped
         /// </summary>
@@ -28,13 +31,16 @@ namespace Shift_Picker.Components
         /// <summary>
         /// The LoginModel, this is null, when the user isn't logged in
         /// </summary>
-        [Inject]
+       
         protected LoginModel LoggingInUser { get; set; }
         /// <summary>
         /// The Navigation Manager that is given by the Framework to navigat from one page to another
         /// </summary>
         [Inject]
         protected NavigationManager NavigationManager { get; set; }
+
+        [Inject]
+        protected ISessionStorageService SessionStorageService { get; set; }
         /// <summary>
         /// This method is called when the page is loaded
         /// </summary>
@@ -48,10 +54,10 @@ namespace Shift_Picker.Components
         /// </summary>
         protected  void ValidateUser()
         {
-            LoggingInUser.User = User;
-            LoginService.Authenticate();
-            NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
-            return;
+            ((ShiftPickerCustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(User.UserName, User.Password);
+            NavigationManager.NavigateTo("/");
+
+            SessionStorageService.SetItemAsync("username", User.UserName);
         }
     }
 

@@ -41,7 +41,7 @@ namespace Shift_Picker.Components
         /// <summary>
         /// This method is called when the page is loaded
         /// </summary>
-        protected async override Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             User = new UserModel();
         }

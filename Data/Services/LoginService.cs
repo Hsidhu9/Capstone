@@ -25,7 +25,7 @@ namespace ShiftPicker.Data
         public LoginModel Authenticate(string userName, string password)
         {
             UserModel user =  _userContext.UserModels.Include(s => s.Role)
-                                .Where(s => s.UserName.Equals(userName) && 
+                                .Where(s => s.UserName.ToUpper().Equals(userName.ToUpper()) && 
            s.Password.Equals(password)).FirstOrDefault();
              
             if(user != null && user.isActive) 

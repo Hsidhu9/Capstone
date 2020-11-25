@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
 
 namespace Shift_Picker.Components
 {
@@ -28,11 +29,7 @@ namespace Shift_Picker.Components
         /// </summary>
         protected UserModel User { get; set; }
 
-        /// <summary>
-        /// The LoginModel, this is null, when the user isn't logged in
-        /// </summary>
-       
-        protected LoginModel LoggingInUser { get; set; }
+        
         /// <summary>
         /// The Navigation Manager that is given by the Framework to navigat from one page to another
         /// </summary>
@@ -49,15 +46,21 @@ namespace Shift_Picker.Components
             User = new UserModel();
         }
 
+        [CascadingParameter]
+        protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
         /// <summary>
         /// Validating the User and then Logging them based upon the validation
         /// </summary>
-        protected  void ValidateUser()
+        protected async Task ValidateUser()
         {
             ((ShiftPickerCustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(User.UserName, User.Password);
             NavigationManager.NavigateTo("/");
 
-            SessionStorageService.SetItemAsync("username", User.UserName);
+            var authState = await AuthenticationStateTask;
+
+            if(authState.User.HasClaim(s => s.Type.Equals(ClaimTypes.Name)))
+                await SessionStorageService.SetItemAsync("username", User.UserName);
         }
     }
 

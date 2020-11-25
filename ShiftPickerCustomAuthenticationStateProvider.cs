@@ -87,5 +87,34 @@ namespace Shift_Picker
                 NotifyAuthenticationStateChanged( Task.FromResult(new AuthenticationState(user)));
             }
         }
+
+        public void MarkUserChanged(UserModel loggedinUser)
+        {
+           var identity = new ClaimsIdentity(new[] {
+                    new Claim("UserId", loggedinUser.Id.ToString()),
+                    new Claim("UserName", loggedinUser.UserName),
+                    new Claim(ClaimTypes.Name, loggedinUser.UserName),
+                    new Claim(ClaimTypes.GivenName, loggedinUser.FirstName),
+                    new Claim(ClaimTypes.Surname, loggedinUser.LastName),
+                    new Claim(ClaimTypes.StreetAddress, loggedinUser.Address),
+                    new Claim(ClaimTypes.Country, loggedinUser.Country),
+                    new Claim(ClaimTypes.PostalCode, loggedinUser.Zip),
+                    new Claim(ClaimTypes.Email, loggedinUser.Email),
+                    new Claim(ClaimTypes.StateOrProvince, loggedinUser.State),
+                    new Claim("Password", loggedinUser.Password),
+                    new Claim("City", loggedinUser.City),
+                    new Claim("RoleName", loggedinUser.Role.RoleName),
+                    new Claim("RoleId", loggedinUser.RoleId.ToString())
+                }, "apiauth_type"); ;
+            var user = new ClaimsPrincipal(identity);
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
+        }
+
+        public void Logout()
+        {
+            var identity = new ClaimsIdentity();
+            var user = new ClaimsPrincipal(identity);
+            NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
+        }
     }
 }

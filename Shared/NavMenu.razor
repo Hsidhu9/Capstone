@@ -1,78 +1,94 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">Shift_Picker</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+﻿
+<AuthorizeView>
+    <Authorized>
+        <div class="top-row pl-4 navbar navbar-dark">
+            <a class="navbar-brand" href="">Shift_Picker</a>
+            <button class="navbar-toggler" @onclick="ToggleNavMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+            <ul class="nav flex-column">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                        <span class="oi oi-home" aria-hidden="true"></span> Home
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="schedules">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span> Schedules
+                    </NavLink>
+                </li>
+                @if (int.TryParse(context.User.Claims.Where(s => s.Type == "RoleId").Select(s => s.Value).FirstOrDefault(), out int roleId))
+                {
+                    @if (roleId == 4)
+                    {
+                        <li class="nav-item px-3">
+                            <NavLink class="nav-link" href="allshifts">
+                                <span class="oi oi-bar-chart" aria-hidden="true"></span> All Shifts
+                            </NavLink>
+                        </li>
+                    }
+                }
 
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="schedules">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Schedules
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="allshifts">
-                <span class="oi oi-bar-chart" aria-hidden="true"></span> All Shifts
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Profile">
-                <span class="oi oi-person" aria-hidden="true"></span> Profile
-            </NavLink>
-        </li>
-        @*@if (LoggedInUser.User != null && LoggedInUser.User.RoleId != 4)
-        {
-        <li class="nav-item px-3">
-            <NavLink class="dropdown-toggle nav-link" @onclick="() => expandSubNav = !expandSubNav" href="#">
-                <span class="oi oi-collapse-down" aria-hidden="true"></span> Admin
-            </NavLink>
-            @if (expandSubNav)
-            {
-        <ul>
-            <li>
-                <NavLink class="expand-menu" href="showAllEmployees">
-                    <span class="expand-menu-span">Show Employees</span>
-                </NavLink>
-            </li>
-            <li>
-                <NavLink class="expand-menu" href="ShowAllSupervisors">
-                    <span class="expand-menu-span">Show Supervisors</span>
-                </NavLink>
-            </li>
-            <li>
-                <NavLink class="expand-menu" href="CancellationRequest">
-                    <span class="expand-menu-span">Cancellation Requests</span>
-                </NavLink>
-            </li>
-            <li>
-                <NavLink class="expand-menu" href="employee/create">
-                    <span class="expand-menu-span">Add New User</span>
-                </NavLink>
-            </li>
-            <li>
-                <NavLink class="expand-menu" href="ShiftReports">
-                    <span class="expand-menu-span">Shift Reports</span>
-                </NavLink>
-            </li>
-        </ul>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="Profile">
+                        <span class="oi oi-person" aria-hidden="true"></span> Profile
+                    </NavLink>
+                </li>
+                @if (roleId != 4)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="dropdown-toggle nav-link" @onclick="() => expandSubNav = !expandSubNav" href="#">
+                            <span class="oi oi-collapse-down" aria-hidden="true"></span> Admin
+                        </NavLink>
+                        @if (expandSubNav)
+                        {
+                            <ul>
+                                <li>
+                                    <NavLink class="expand-menu" href="showAllEmployees">
+                                        <span class="expand-menu-span">Show Employees</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink class="expand-menu" href="ShowAllSupervisors">
+                                        <span class="expand-menu-span">Show Supervisors</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink class="expand-menu" href="CancellationRequest">
+                                        <span class="expand-menu-span">Cancellation Requests</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink class="expand-menu" href="employee/create">
+                                        <span class="expand-menu-span">Add New User</span>
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink class="expand-menu" href="ShiftReports">
+                                        <span class="expand-menu-span">Shift Reports</span>
+                                    </NavLink>
+                                </li>
+                            </ul>
 
-            }
-        </li>
-        }*@
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="#" @onclick="LogOut">
-                <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
-            </NavLink>
-        </li>
-    </ul>
-</div>
+                        }
+                    </li>
+                }
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" href="#" @onclick="LogOut">
+                        <span class="oi oi-account-logout" aria-hidden="true"></span> Logout
+                    </NavLink>
+                </li>
+            </ul>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <Shift_Picker.Components.Login/>
+    </NotAuthorized>
+</AuthorizeView>
+
+
 
 @code {
     private bool collapseNavMenu = true;

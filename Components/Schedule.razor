@@ -412,6 +412,9 @@
     </div>
 </div>
     </Authorized>
+    <NotAuthorized>
+        <Login/>
+    </NotAuthorized>
 </AuthorizeView>
 
 
@@ -447,8 +450,8 @@
 
     private string SelectedShiftStartTime { get; set; }
     private string SelectedShiftEndTime { get; set; }
-
-    private bool IsEmployeeLoggedIn { get { return LoggedInUser.User.RoleId == 4; } }
+    
+    private bool IsEmployeeLoggedIn { get { return LoggedInUser?.RoleId == 4; } }
 
     /// <summary>
     /// check if the number of employee needed for the shift has been fullfilled. 
@@ -493,7 +496,7 @@
             //To Avoid null reference exception
             if(selectedShift != null)
             {
-                var shiftDetailsForThisEmployee = selectedShift.ShiftDetails.Where(s => s.PickedByEmployee == LoggedInUser.User.Id).ToList();
+                var shiftDetailsForThisEmployee = selectedShift.ShiftDetails.Where(s => s.PickedByEmployee == LoggedInUser.Id).ToList();
                 if (shiftDetailsForThisEmployee.Count() > 0)
                     return true;
                 else
@@ -517,7 +520,7 @@
     /// <param name="hourOfDay"></param>
     private void SetStartDateTimeForShiftCreation(DateTime dayOfWeek, string hourOfDay)
     {
-        if(LoggedInUser.User.RoleId != 4)
+        if(LoggedInUser.RoleId != 4)
         {
             ToggleModal();
             //Storing the date, so that if the start date time and end datetime could be assigned to selected day
@@ -568,7 +571,7 @@
             ErrorMessage = "Selected Start Time is greater or equal to end time";
         else
         {
-            for (int i = CreatedStartDateTime.Hour; i <= CreatedEndDateTime.Hour; i++)
+            for (int i = CreatedStartDateTime.Hour; i < CreatedEndDateTime.Hour; i++)
             {
                 SelectedShiftsElementIds.Add(CreatedStartDateTime.Date.ToString() + i, null);
             }

@@ -16,7 +16,8 @@ namespace ShiftPicker.Data.Services
         Task<UserModel> GetUserByUsername(string username);
         Task<List<UserModel>> GetAllSupervisors();
         Task<UserModel> GetUser(int Id);
-        Task<UserModel> GetUserById(int Id);
+        Task<UserModel> GetUserByIdAsync(int Id);
         void UpdateUser(UserModel user);
+        UserModel GetUserById(int Id);
     }
 }

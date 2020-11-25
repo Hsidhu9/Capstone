@@ -26,21 +26,32 @@ namespace Shift_Picker
         }
         public async override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var loggedinUserName = await _sessionStorageService.GetItemAsync<string>("userName");
             UserModel loggedinUser = null;
+            var loggedinUserName = await _sessionStorageService.GetItemAsync<string>("username");
+
             if (!string.IsNullOrEmpty(loggedinUserName))
             {
-                loggedinUser= await _userService.GetUserByUsername(loggedinUserName);
+                loggedinUser = await _userService.GetUserByUsername(loggedinUserName);
             }
             ClaimsIdentity identity;
             if(loggedinUser != null)
             {
                 identity = new ClaimsIdentity(new[] {
+                    new Claim("UserId", loggedinUser.Id.ToString()),
+                    new Claim("UserName", loggedinUser.UserName),
                     new Claim(ClaimTypes.Name, loggedinUser.UserName),
                     new Claim(ClaimTypes.GivenName, loggedinUser.FirstName),
                     new Claim(ClaimTypes.Surname, loggedinUser.LastName),
+                    new Claim(ClaimTypes.StreetAddress, loggedinUser.Address),
+                    new Claim(ClaimTypes.Country, loggedinUser.Country),
+                    new Claim(ClaimTypes.PostalCode, loggedinUser.Zip),
+                    new Claim(ClaimTypes.Email, loggedinUser.Email),
+                    new Claim(ClaimTypes.StateOrProvince, loggedinUser.State),
+                    new Claim("Password", loggedinUser.Password),
+                    new Claim("City", loggedinUser.City),
+                    new Claim("RoleName", loggedinUser.Role.RoleName),
                     new Claim("RoleId", loggedinUser.RoleId.ToString())
-                }, "apiauth_type");
+                }, "apiauth_type"); ;
             }
             else
             {
@@ -56,12 +67,22 @@ namespace Shift_Picker
 
             if(loginModel != null)
             {
-                var identity = new ClaimsIdentity(new[] { 
+                    var identity = new ClaimsIdentity(new[] {
+                    new Claim("UserId", loginModel.User.Id.ToString()),
+                    new Claim("UserName", loginModel.User.UserName),
                     new Claim(ClaimTypes.Name, loginModel.User.UserName),
                     new Claim(ClaimTypes.GivenName, loginModel.User.FirstName),
                     new Claim(ClaimTypes.Surname, loginModel.User.LastName),
+                    new Claim(ClaimTypes.StreetAddress, loginModel.User.Address),
+                    new Claim(ClaimTypes.Country, loginModel.User.Country),
+                    new Claim(ClaimTypes.PostalCode, loginModel.User.Zip),
+                    new Claim(ClaimTypes.Email, loginModel.User.Email),
+                    new Claim(ClaimTypes.StateOrProvince, loginModel.User.State),
+                    new Claim("Password", loginModel.User.Password),
+                    new Claim("City", loginModel.User.City),
+                    new Claim("RoleName", loginModel.User.Role.RoleName),
                     new Claim("RoleId", loginModel.User.RoleId.ToString())
-                }, "apiauth_type");
+                }, "apiauth_type"); ;
                 var user = new ClaimsPrincipal(identity);
                 NotifyAuthenticationStateChanged( Task.FromResult(new AuthenticationState(user)));
             }

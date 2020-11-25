@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Shift_Picker.Components
 {
@@ -18,12 +19,13 @@ namespace Shift_Picker.Components
         /// Getting the UserService from dependency Injection Container, which was injected as scoped
         /// </summary>
         private IUserService UserService => ScopedServices.GetService<IUserService>();
-
+        [CascadingParameter]
+        protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
         /// <summary>
         /// Getting the logged in User from the Dependency Inhjection container, which was injected as singleton
         /// </summary>
-        
-        protected LoginModel LoggedInUser { get; set; }
+
+        protected UserModel LoggedInUser { get; set; }
 
         /// <summary>
         /// All the suprevisors, these are populated upon page load from the db
@@ -34,6 +36,9 @@ namespace Shift_Picker.Components
         /// </summary>
         protected async override Task OnInitializedAsync()
         {
+            var authState = await AuthenticationStateTask;
+            if (int.TryParse(authState.User.Claims.Where(s => s.Type == "UserId").Select(s => s.Value).FirstOrDefault(), out int userId))
+                LoggedInUser = await UserService.GetUser(userId);
             AllUsers = await UserService.GetAllSupervisors();
         }
         /// <summary>

@@ -57,7 +57,7 @@ namespace Shift_Picker.Components
             ((ShiftPickerCustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(User.UserName, User.Password);
             NavigationManager.NavigateTo("/");
 
-            SessionStorageService.SetItemAsync("userName", User.UserName);
+            SessionStorageService.SetItemAsync("username", User.UserName);
         }
     }
 

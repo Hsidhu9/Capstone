@@ -66,7 +66,7 @@ else
                         @user.Address, @user.City, @user.State, @user.Zip, @user.Country
                     </td>
                     <td>
-                        @if (user.Id != LoggedInUser.User.Id)
+                        @if (user.Id != LoggedInUser.Id)
                         {
                             <a class="btn btn-primary" href="employee/edit/@user.Id">Edit</a>
                             @if (user.isActive)

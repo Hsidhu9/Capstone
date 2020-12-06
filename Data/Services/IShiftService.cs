@@ -9,7 +9,7 @@ namespace ShiftPicker.Data.Services
     /// </summary>
     public interface IShiftService
     {
-        void AddShift(ShiftModel Shift);
+        ShiftModel AddShift(ShiftModel Shift);
         void DeleteShift(int id);
         List<ShiftModel> GetShiftsForDateRange(DateTime startDateTime, DateTime endDateTime);
         void UpdateShift(ShiftModel Shift);

@@ -25,10 +25,11 @@ namespace ShiftPicker.Data.Services
         /// Adding shift, when shift is created by supervisor/manager
         /// </summary>
         /// <param name="Shift"></param>
-        public void AddShift(ShiftModel Shift)
+        public ShiftModel AddShift(ShiftModel Shift)
         {
-            _userContext.ShiftModels.Add(Shift);
+          var x = _userContext.ShiftModels.Add(Shift);
             _userContext.SaveChanges();
+            return x.Entity;
         }
         /// <summary>
         /// Not implemented

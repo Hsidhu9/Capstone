@@ -61,7 +61,7 @@ namespace Shift_Picker
             return await Task.FromResult(new AuthenticationState(user));
         }
 
-        public void MarkUserAsAuthenticated(string userName, string password)
+        public ClaimsPrincipal MarkUserAsAuthenticated(string userName, string password)
         {
             var loginModel = _loginService.Authenticate(userName, password);
 
@@ -85,7 +85,10 @@ namespace Shift_Picker
                 }, "apiauth_type"); ;
                 var user = new ClaimsPrincipal(identity);
                 NotifyAuthenticationStateChanged( Task.FromResult(new AuthenticationState(user)));
+                return user;
             }
+            return null;
+
         }
 
         public void MarkUserChanged(UserModel loggedinUser)

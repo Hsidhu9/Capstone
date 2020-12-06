@@ -1,7 +1,7 @@
-﻿using Blazored.SessionStorage;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.DependencyInjection;
 using ShiftPicker.Data.Models;
@@ -90,6 +90,11 @@ namespace Shift_Picker.Components
         /// </summary>
         private IShiftDetailService ShiftDetailService => ScopedServices.GetService<IShiftDetailService>();
 
+
+        private HubConnection hubConnection;
+
+        [Inject]
+        protected NavigationManager NavigationManager { get; set; }
         [CascadingParameter]
         protected Task<AuthenticationState> AuthenticationStateTask { get; set; }
         /// <summary>
@@ -97,6 +102,18 @@ namespace Shift_Picker.Components
         /// </summary>
         protected async override Task OnInitializedAsync()
         {
+            hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
+            .Build();
+
+            hubConnection.On("ReceiveMessage", () =>
+            {
+                PopulateShifts();
+                StateHasChanged();
+            });
+
+            await hubConnection.StartAsync();
+
             SetGrid();
             SetAllHours();
             PopulateShifts();
@@ -104,7 +121,16 @@ namespace Shift_Picker.Components
             if (int.TryParse(authState.User.Claims.Where(s => s.Type == "UserId").Select(s => s.Value).FirstOrDefault(), out int userId))
                 LoggedInUser = await UserService.GetUser(userId);
         }
-        
+
+        public bool IsConnected =>
+        hubConnection.State == HubConnectionState.Connected;
+
+        async Task SendMessage() => await hubConnection.SendAsync("SendMessage");
+        public void Dispose()
+        {
+            _ = hubConnection.DisposeAsync();
+        }
+
         /// <summary>
         /// Populating all the shifts created for the week in display
         /// </summary>
@@ -204,8 +230,9 @@ namespace Shift_Picker.Components
         /// <param name="startDateTime"></param>
         /// <param name="endDateTime"></param>
         /// <param name="numberOfEmployeedNeeded"></param>
-        protected void AddShifts(DateTime startDateTime, DateTime endDateTime , int numberOfEmployeedNeeded)
+        protected async Task AddShifts(DateTime startDateTime, DateTime endDateTime , int numberOfEmployeedNeeded)
         {
+           
             ShiftModel shiftModel = new ShiftModel()
             {
                 StartTime = startDateTime,
@@ -213,15 +240,17 @@ namespace Shift_Picker.Components
                 EmployeesNeeded = numberOfEmployeedNeeded,
                 CreatedBy = LoggedInUser.Id
             };
-
             ShiftService.AddShift(shiftModel);
+
+            if (IsConnected) await SendMessage();
+
         }
 
         /// <summary>
         /// Selecting the shift as an employee
         /// </summary>
         /// <param name="shiftId"></param>
-        protected void SelectedShiftAsEmployee(int shiftId)
+        protected async Task SelectedShiftAsEmployee(int shiftId)
         {
             if(LoggedInUser.RoleId == 4)
             {
@@ -232,7 +261,7 @@ namespace Shift_Picker.Components
                 };
 
                 ShiftDetailService.AddShiftDetail(shiftDetail);
-
+                if (IsConnected) await SendMessage();
             }
 
         }

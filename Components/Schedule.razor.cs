@@ -261,7 +261,7 @@ namespace Shift_Picker.Components
                 };
 
                 ShiftDetailService.AddShiftDetail(shiftDetail);
-                //if (IsConnected) await SendMessage();
+                if (IsConnected) await SendMessage();
             }
 
         }

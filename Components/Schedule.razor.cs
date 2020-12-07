@@ -106,6 +106,7 @@ namespace Shift_Picker.Components
             .WithUrl(NavigationManager.ToAbsoluteUri("/chathub"))
             .Build();
 
+            //signal r listening to real time changes
             hubConnection.On("ReceiveMessage", () =>
             {
                 PopulateShifts();
@@ -241,7 +242,7 @@ namespace Shift_Picker.Components
                 CreatedBy = LoggedInUser.Id
             };
             ShiftService.AddShift(shiftModel);
-
+            //signal r sending real time changes
             if (IsConnected) await SendMessage();
 
         }
@@ -261,6 +262,7 @@ namespace Shift_Picker.Components
                 };
 
                 ShiftDetailService.AddShiftDetail(shiftDetail);
+                //signal r sending real time changes
                 if (IsConnected) await SendMessage();
             }
 
